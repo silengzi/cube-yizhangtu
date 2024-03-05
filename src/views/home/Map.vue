@@ -18,8 +18,8 @@ export default {
         ],
         target: 'map',
         view: new View({
-            center: [6000000, 0],
-            zoom: 2
+            center: [12951000, 4853000],
+            zoom: 11
         })
     })
   }

@@ -24,7 +24,9 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
 .header {
-  background-color: #103932;
+  // background-color: #103932;
+  background-color: #042650;
+  opacity: 0.9;
   position: relative;
   height: 67px;
 }
