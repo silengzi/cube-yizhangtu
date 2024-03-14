@@ -25,38 +25,38 @@
         </div>
         <div class="layerList">
           <dv-border-box-12 class="mask" backgroundColor="rgb(4, 47, 84, 0.7)">
-            <div class="title">
-              <i>
+            <div>
+              <div class="title">
                 <img
                   src="@/assets/layers.png"
                   alt=""
                 >
-              </i>
-              <span>图层列表</span>
-            </div>
-            <div class="layerContent">
-              <el-collapse v-model="layerName">
-                <el-collapse-item title="行政区划" name="1">
-                  <el-checkbox-group v-model="administration">
-                    <el-checkbox label="行政区划" checked></el-checkbox>
-                  </el-checkbox-group>
-                </el-collapse-item>
-                <el-collapse-item title="监控设备" name="2">
-                  <el-radio-group v-model="monitor">
-                    <el-radio label="监控塔"></el-radio>
-                    <el-radio label="卡口"></el-radio>
-                  </el-radio-group>
-                </el-collapse-item>
-                <el-collapse-item title="防火设施" name="3">
-                  <el-radio-group v-model="facilities">
-                    <el-radio label="消防队"></el-radio>
-                    <el-radio label="物资库"></el-radio>
-                    <el-radio label="取水点"></el-radio>
-                    <el-radio label="防火道路"></el-radio>
-                    <el-radio label="阻隔带"></el-radio>
-                  </el-radio-group>
-                </el-collapse-item>
-              </el-collapse>
+                <span>图层列表</span>
+              </div>
+              <div class="layerContent">
+                <el-collapse v-model="layerName">
+                  <el-collapse-item title="行政区划" name="1">
+                    <el-checkbox-group v-model="administration">
+                      <el-checkbox label="行政区划" checked></el-checkbox>
+                    </el-checkbox-group>
+                  </el-collapse-item>
+                  <el-collapse-item title="监控设备" name="2">
+                    <el-radio-group v-model="monitor">
+                      <el-radio label="监控塔"></el-radio>
+                      <el-radio label="卡口"></el-radio>
+                    </el-radio-group>
+                  </el-collapse-item>
+                  <el-collapse-item title="防火设施" name="3">
+                    <el-radio-group v-model="facilities">
+                      <el-radio label="消防队"></el-radio>
+                      <el-radio label="物资库"></el-radio>
+                      <el-radio label="取水点"></el-radio>
+                      <el-radio label="防火道路"></el-radio>
+                      <el-radio label="阻隔带"></el-radio>
+                    </el-radio-group>
+                  </el-collapse-item>
+                </el-collapse>
+              </div>
             </div>
           </dv-border-box-12>
         </div>
@@ -235,92 +235,154 @@ export default {
     left: 530px;
   }
   .layerList {
-    position: relative;
+    // position: relative;
+    z-index: 2;
+    position: absolute;
+    top: 67px;
+    left: calc(100vw - 300px - 220px);
+    // background-color: red;
+    width: 200px;
+    height: 500px;
     .dv-border-box-12 {
-      width: 200px;
-      min-height: 300px;
-      z-index: 2;
-      position: absolute;
-      top: 0;
-      left: calc(100vw - 300px - 200px);
-
+      padding: 10px;
       .title {
-        position: relative;
-        i {
-          img {
-            width: 25px;
-            height: 25px;
-            // display: inline-block;
-            position: absolute;
-            top: 15px;
-            left: 12px;
-          }
+        height: 30px;
+        display: flex;
+        justify-content: left;
+        align-items: center;
+        img {
+          height: 100%;
         }
         span {
-          color: #fff;
-          // display: inline-block;
-          position: absolute;
-          top: 15px;
-          left: 42px;
+          margin-left: 5px;
         }
       }
-      .title::after {
-        content: "";
-        position: absolute;
-        left: 0;
-        top: 50px;
-        right: 0;
-        width: 90%;
-        margin: auto;
-        height: 1px;
-        background-color: #1dabf2;
-      }
-    }
-    .layerContent {
-      position: absolute;
-      z-index: 2;
-      top: 55px;
-      left: 17px;
-      color: #fff;
+      .layerContent {
+        width: 100%;
 
-      .el-collapse {
-        border-top: none;
-        border-bottom: none;
-      
-        /deep/ .el-collapse-item__content {
+        ::v-deep .el-collapse-item__content {
           padding-bottom: 0;
           // line-height: 0;
         }
-        /deep/ .el-collapse-item__header {
+        ::v-deep .el-collapse-item__header {
           color: #fff;
           background-color: transparent;  // 背景色变为透明，即不显示任何颜色
           border-bottom: none;
           font-size: 16px;
           height: 30px;
         }
-        /deep/ .el-collapse-item__wrap {
+        ::v-deep .el-collapse-item__wrap {
           background-color: transparent;  // 背景色变为透明，即不显示任何颜色
           border-bottom: none;
         }
-        /deep/ .el-checkbox__label {
+        ::v-deep .el-checkbox__label {
           color: #fff;
           font-size: 15px;
         }
-        /deep/ .el-checkbox__input.is-checked+.el-checkbox__label {
+        ::v-deep .el-checkbox__input.is-checked+.el-checkbox__label {
           color: #409EFF;
         }
-        /deep/ .el-checkbox, .el-checkbox__input {
+        ::v-deep .el-checkbox, .el-checkbox__input {
           display: block;
         }
         .el-radio {
           display: block;
           margin-bottom: 5px;
         }
-        /deep/ .el-radio__label {
+        ::v-deep .el-radio__label {
           color: #fff;
         }
       }
     }
+
+
+    // .dv-border-box-12 {
+    //   // width: 200px;
+    //   // min-height: 300px;
+    //   z-index: 2;
+    //   position: absolute;
+    //   top: 0;
+    //   left: calc(100vw - 300px - 200px);
+    //   background-color: red;
+
+
+      // .title {
+      //   position: relative;
+      //   i {
+      //     img {
+      //       width: 25px;
+      //       height: 25px;
+      //       // display: inline-block;
+      //       position: absolute;
+      //       top: 15px;
+      //       left: 12px;
+      //     }
+      //   }
+      //   span {
+      //     color: #fff;
+      //     // display: inline-block;
+      //     position: absolute;
+      //     top: 15px;
+      //     left: 42px;
+      //   }
+      // }
+      // .title::after {
+      //   content: "";
+      //   position: absolute;
+      //   left: 0;
+      //   top: 50px;
+      //   right: 0;
+      //   width: 90%;
+      //   margin: auto;
+      //   height: 1px;
+      //   background-color: #1dabf2;
+      // }
+    // }
+    // .layerContent {
+    //   position: absolute;
+    //   z-index: 2;
+    //   top: 55px;
+    //   left: 17px;
+    //   color: #fff;
+
+    //   .el-collapse {
+    //     border-top: none;
+    //     border-bottom: none;
+      
+    //     /deep/ .el-collapse-item__content {
+    //       padding-bottom: 0;
+    //       // line-height: 0;
+    //     }
+    //     /deep/ .el-collapse-item__header {
+    //       color: #fff;
+    //       background-color: transparent;  // 背景色变为透明，即不显示任何颜色
+    //       border-bottom: none;
+    //       font-size: 16px;
+    //       height: 30px;
+    //     }
+    //     /deep/ .el-collapse-item__wrap {
+    //       background-color: transparent;  // 背景色变为透明，即不显示任何颜色
+    //       border-bottom: none;
+    //     }
+    //     /deep/ .el-checkbox__label {
+    //       color: #fff;
+    //       font-size: 15px;
+    //     }
+    //     /deep/ .el-checkbox__input.is-checked+.el-checkbox__label {
+    //       color: #409EFF;
+    //     }
+    //     /deep/ .el-checkbox, .el-checkbox__input {
+    //       display: block;
+    //     }
+    //     .el-radio {
+    //       display: block;
+    //       margin-bottom: 5px;
+    //     }
+    //     /deep/ .el-radio__label {
+    //       color: #fff;
+    //     }
+    //   }
+    // }
     /* /deep/ .dv-border-box-12 .border-box-content {
       background-color: #042650;
       opacity: 0.7;
