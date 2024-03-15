@@ -201,7 +201,7 @@ export default {
       z-index: 2;
       position: absolute;
       top: 5px;
-      left: 325px;
+      left: 21%;
     }
   }
   .date {
@@ -211,7 +211,7 @@ export default {
     z-index: 2;
     position: absolute;
     top: 72px;
-    left: 550px;
+    left: calc(222px + 21%);
   }
   .layerList {
     // position: relative;
@@ -234,6 +234,7 @@ export default {
         }
         span {
           margin-left: 5px;
+          color: #fff;
         }
       }
       .layerContent {
