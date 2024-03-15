@@ -2,16 +2,13 @@
   <div class="home">
     <Header />
     <div class="main">
-      <div class="left">
-        <dv-border-box-10 backgroundColor="rgb(4, 47, 84, 0.7)">dv-border-box-10</dv-border-box-10>
-      </div>
+      <LeftAside></LeftAside>
       <div class="center">
         <div class="select">
           <el-cascader
             v-model="value"
             :options="options"
             :props="{ expandTrigger: 'hover' }"
-            @change="handleChange"
             clearable
           ></el-cascader>
         </div>
@@ -35,18 +32,18 @@
               </div>
               <div class="layerContent">
                 <el-collapse v-model="layerName">
-                  <el-collapse-item title="行政区划" name="1">
+                  <el-collapse-item class="item" title="行政区划" name="1">
                     <el-checkbox-group v-model="administration">
                       <el-checkbox label="行政区划" checked></el-checkbox>
                     </el-checkbox-group>
                   </el-collapse-item>
-                  <el-collapse-item title="监控设备" name="2">
+                  <el-collapse-item class="item" title="监控设备" name="2">
                     <el-radio-group v-model="monitor">
                       <el-radio label="监控塔"></el-radio>
                       <el-radio label="卡口"></el-radio>
                     </el-radio-group>
                   </el-collapse-item>
-                  <el-collapse-item title="防火设施" name="3">
+                  <el-collapse-item class="item" title="防火设施" name="3">
                     <el-radio-group v-model="facilities">
                       <el-radio label="消防队"></el-radio>
                       <el-radio label="物资库"></el-radio>
@@ -66,9 +63,7 @@
           </dv-border-box-12>
         </div>
       </div>
-      <div class="right">
-        <dv-border-box-10 backgroundColor="rgb(4, 47, 84, 0.7)">dv-border-box-10</dv-border-box-10>
-      </div>
+      <RightAside></RightAside>
     </div>
     <div class="mainMap">
       <Map></Map>
@@ -80,12 +75,16 @@
 // @ is an alias to /src
 import Header from '@/components/header.vue'
 import Map from '@/views/home/Map.vue'
+import LeftAside from '@/views/home/LeftAside.vue'
+import RightAside from '@/views/home/RightAside.vue'
 
 export default {
   name: 'Home',
   components: {
     Header,
-    Map
+    Map,
+    LeftAside,
+    RightAside,
   },
   data() {
     return {
@@ -173,39 +172,19 @@ export default {
 <style lang="less" scoped>
 .home {
   position: relative;
-  .main {
-    // display: flex;
-    // justify-content: space-between;
-    .left,
-    .right {
-      .dv-border-box-10 {
-        width: 300px;
-        height: calc(100vh - 67px);
-        z-index: 2;
-        position: absolute;
-        top: 67px;
-        left: 0;
-      }
-    }
-    .right {
-      .dv-border-box-10 {
-        left: calc(100vw - 300px);
-      }
-    }
-  }
-  .left,
-  .right {
-    /deep/ .dv-border-box-10 .border-box-content {
-      // background-color: #0c1225;
-      // background-color: #042650;
-      // opacity: 0.7;
-      margin: 7px;
-      width: 287px;
-      height: calc(100vh - 67px - 14px);
-      border-radius: 10px;
-      box-sizing: border-box;
-    }
-  }
+  
+  // .left, .right {
+  //   /deep/ .dv-border-box-10 .border-box-content {
+  //     background-color: #0c1225;
+  //     background-color: #042650;
+  //     opacity: 0.7;
+  //     margin: 7px;
+  //     width: 100%;
+  //     height: calc(100vh - 67px - 14px);
+  //     border-radius: 10px;
+  //     box-sizing: border-box;
+  //   }
+  // }
   .mainMap {
     width: 100%;
     height: calc(100vh - 67px);
@@ -222,7 +201,7 @@ export default {
       z-index: 2;
       position: absolute;
       top: 5px;
-      left: 305px;
+      left: 325px;
     }
   }
   .date {
@@ -232,14 +211,14 @@ export default {
     z-index: 2;
     position: absolute;
     top: 72px;
-    left: 530px;
+    left: 550px;
   }
   .layerList {
     // position: relative;
     z-index: 2;
     position: absolute;
     top: 67px;
-    left: calc(100vw - 300px - 220px);
+    left: calc(100vw - 20% - 220px);
     // background-color: red;
     width: 200px;
     height: 500px;
@@ -260,6 +239,15 @@ export default {
       .layerContent {
         width: 100%;
 
+        .el-collapse {
+          border-bottom: 0;
+          margin-top: 10px;
+          padding: 10px;
+
+          .el-checkbox-group,  .el-radio-group{
+            margin-left: 10px;
+          }
+        }
         ::v-deep .el-collapse-item__content {
           padding-bottom: 0;
           // line-height: 0;
@@ -401,7 +389,7 @@ export default {
       z-index: 2;
       position: absolute;
       top: calc(100vh - 220px);
-      left: 300px;
+      left: 20%;
 
       span {
         color: #fff;
