@@ -23,13 +23,17 @@
           <dv-decoration-10 style="width:100%;height:5px;" />
           <div class="topContent">
             <div class="header">
-              <div class="updateTime" :bind="updateTime">
+              <div
+                class="updateTime"
+                :bind="updateTime"
+              >
                 <label>更新时间：</label>{{updateTime}}
               </div>
               <div class="primary">
                 <label>首要污染物：</label>PM2.5
               </div>
             </div>
+            <!-- 污染指数 -->
             <div class="pollutionIndex">
               <div class="index">
                 <label>135</label>
@@ -37,6 +41,75 @@
               </div>
               <div class="lineaer">
 
+              </div>
+            </div>
+            <div class="sort">
+              <!-- 温度 -->
+              <div class="temperature category">
+                <div class="flexLeft">
+                  <img
+                    src="@/assets/大气温度.png"
+                    alt=""
+                  >
+                  <label for="">温度</label>
+                </div>
+                <span>27℃</span>
+              </div>
+              <!-- 湿度 -->
+              <div class="humidity category">
+                <div class="flexLeft">
+                  <img
+                    src="@/assets/湿度.png"
+                    alt=""
+                  >
+                  <label for="">湿度</label>
+                </div>
+                <span>50%</span>
+              </div>
+              <!-- 风向 -->
+              <div class="windDirection category">
+                <div class="flexLeft">
+                  <img
+                    src="@/assets/风向.png"
+                    alt=""
+                  >
+                  <label for="">风向</label>
+                </div>
+                <span>西北风</span>
+              </div>
+              <!-- 风速 -->
+              <div class="windSpeed category">
+                <div class="flexLeft">
+                  <img
+                    src="@/assets/风速.png"
+                    alt=""
+                  >
+                  <label for="">风速</label>
+                </div>
+                <span>9m/s</span>
+
+              </div>
+              <!-- 土壤湿度 -->
+              <div class="soilMoisture category">
+                <div class="flexLeft">
+                  <img
+                    src="@/assets/土壤湿度.png"
+                    alt=""
+                  >
+                  <label for="">土壤湿度</label>
+                </div>
+                <span>70%</span>
+              </div>
+              <!-- 气压 -->
+              <div class="pressure category">
+                <div class="flexLeft">
+                  <img
+                    src="@/assets/大气压.png"
+                    alt=""
+                  >
+                  <label for="">气压</label>
+                </div>
+                <span>101.325kPa</span>
               </div>
             </div>
           </div>
@@ -150,9 +223,44 @@ export default {
           }
 
           .lineaer {
-            border: 1PX solid #9bfee1;
+            border: 1px solid #9bfee1;
             width: 200px;
             height: 16px;
+          }
+        }
+
+        .sort {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: space-between;
+          margin: 5px;
+
+          .category {
+            width: 46%;
+            height: 40px;
+            margin: 5px;
+            background: rgba(4, 47, 84, 0.5);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            .flexLeft {
+              display: flex;
+              align-items: center;
+              img {
+                width: 20px;
+                height: 20px;
+              }
+  
+              label {
+                color: #bcb8b8;
+                margin-left: 2px;
+              }
+            }
+
+            span {
+              color: #fff;
+            }
           }
         }
       }
