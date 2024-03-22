@@ -40,7 +40,11 @@
                 <span>轻度污染</span>
               </div>
               <div class="lineaer">
-
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
               </div>
             </div>
             <div class="sort">
@@ -117,13 +121,81 @@
         <div class="center">
           <dv-decoration-7
             class="titleDecoration"
-            style="width:150px;height:30px;"
+            style="width:160px;height:30px;"
           >
             <div class="title">
-              站点统计
+              监测站点统计
             </div>
           </dv-decoration-7>
           <dv-decoration-10 style="width:100%;height:5px;" />
+          <div class="monitor">
+            <div class="monitor-top">
+              <div class="monitor-sum monitor-top-item">
+                <img src="@/assets/合计.png" alt="">
+                <div class="monitor-sum-index monitor-top-desc">
+                  <label class="sum text">合计</label>
+                  <label class="sum-index index">21</label>
+                </div>
+              </div>
+              <div class="monitor-camera monitor-top-item">
+                <img src="@/assets/摄像头.png" alt="">
+                <div class="monitor-camera-index monitor-top-desc">
+                  <label class="camera text">摄像头</label>
+                  <label class="camera-index index">2</label>
+                </div>
+              </div>
+            </div>
+            <div class="monitor-sort">
+              <!-- 国控站 -->
+              <div class="country monitor-class">
+                <div class="img"></div>
+                <div class="country-desc monitor-sort-desc">
+                  <label class="country-label text">国控站</label>
+                  <label class="country-index monitor-sort-index">8</label>
+                </div>
+              </div>
+              <!-- 省控站 -->
+              <div class="province monitor-class">
+                <div class="img"></div>
+                <div class="province-desc monitor-sort-desc">
+                  <label class="province-label text">省控站</label>
+                  <label class="province-index monitor-sort-index">8</label>
+                </div>
+              </div>
+              <!-- 市控站 -->
+              <div class="city monitor-class">
+                <div class="img"></div>
+                <div class="city-desc monitor-sort-desc">
+                  <label class="city-label text">市控站</label>
+                  <label class="city-index monitor-sort-index">0</label>
+                </div>
+              </div>
+              <!-- 微站 -->
+              <div class="mini monitor-class">
+                <div class="img"></div>
+                <div class="mini-desc monitor-sort-desc">
+                  <label class="mini-label text">微站</label>
+                  <label class="mini-index monitor-sort-index">1</label>
+                </div>
+              </div>
+              <!-- 扬尘站 -->
+              <div class="dust monitor-class">
+                <div class="img"></div>
+                <div class="dust-desc monitor-sort-desc">
+                  <label class="dust-label text">扬尘站</label>
+                  <label class="dust-index monitor-sort-index">0</label>
+                </div>
+              </div>
+              <!-- 其他 -->
+              <div class="other monitor-class">
+                <div class="img"></div>
+                <div class="other-desc monitor-sort-desc">
+                  <label class="other-label text">其他</label>
+                  <label class="other-index monitor-sort-index">2</label>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="bottom">
           <dv-decoration-7
@@ -226,6 +298,15 @@ export default {
             border: 1px solid #9bfee1;
             width: 200px;
             height: 16px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+
+            div {
+              width: 17%;
+              height: 75%;
+              background-color: #e8b961;
+            }
           }
         }
 
@@ -267,6 +348,78 @@ export default {
     }
     .center {
       flex: 1;
+
+      .monitor {
+        height: 85%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        .monitor-top {
+          display: flex;
+          justify-content: space-around;
+
+          .monitor-top-item {
+            display: flex;
+            align-items: center;
+
+            .monitor-top-desc {
+              height: 38px;
+              display: flex;
+              flex-direction: column;
+              justify-content:space-between;
+              align-items: center;
+
+              .text {
+                color: #9da9b3;
+                font-size: 16px;
+              }
+
+              .index {
+                font-size: 23px;
+                color: #3bfefc;
+              }
+            }
+          }
+        }
+
+        .monitor-sort {
+          height: 50%;
+          margin: 20px 10px 0;
+          // padding: 10px;
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: space-around;
+          align-items: center;
+          background-color: rgba(4, 47, 84, 0.5);
+
+          .monitor-class {
+            width: 30%;
+            display: flex;
+            align-items: center;
+
+            .img {
+              width: 20px;
+              height: 20px;
+              background-color: #395676;
+              border-radius: 50%;
+            }
+
+            .monitor-sort-desc {
+              margin-left: 5px;
+              display: flex;
+              flex-direction: column;
+              .text {
+                color: #9daab8;
+              }
+
+              .monitor-sort-index {
+                color: #2ca0de;
+                font-size: 20px;
+              }
+            }
+          }
+        }
+      }
     }
     .bottom {
       flex: 1;
