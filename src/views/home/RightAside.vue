@@ -13,11 +13,12 @@
           </dv-decoration-7>
           <dv-decoration-10 style="width:100%;height:5px;" />
           <!-- 饼图 -->
-          <div
-            class="pie-chart"
-            ref="pieChart"
-            style="width: 100%; height: 80%"
-          ></div>
+          <div class="pie">
+            <div
+              class="pie-chart"
+              ref="pieChart"
+            ></div>
+          </div>
         </div>
         <div class="center">
           <dv-decoration-7
@@ -29,11 +30,12 @@
             </div>
           </dv-decoration-7>
           <dv-decoration-10 style="width:100%;height:5px;" />
-          <div
-            class="bar-chart"
-            ref="barChart"
-            style="width: 100%; height: 80%"
-          ></div>
+          <div class="bar">
+            <div
+              class="bar-chart"
+              ref="barChart"
+            ></div>
+          </div>
         </div>
         <div class="bottom">
           <dv-decoration-7
@@ -41,10 +43,16 @@
             style="width:150px;height:30px;"
           >
             <div class="title">
-              污染日历
+              综合排名
             </div>
           </dv-decoration-7>
           <dv-decoration-10 style="width:100%;height:5px;" />
+          <div class="rank">
+            <dv-scroll-ranking-board
+              class="scroll-ranking-board"
+              :config="config"
+            />
+          </div>
         </div>
       </div>
     </dv-border-box-10>
@@ -68,6 +76,40 @@ export default {
       ],
       // 柱状图数据
       barXData: ['乔木', '灌木', '草本'],
+      // 综合排名数据
+      config: {
+        data: [
+          {
+            name: '阳泉',
+            value: 55
+          },
+          {
+            name: '太原',
+            value: 120
+          },
+          {
+            name: '晋中',
+            value: 78
+          },
+          {
+            name: '临汾',
+            value: 66
+          },
+          {
+            name: '大同',
+            value: 80
+          },
+          {
+            name: '运城',
+            value: 45
+          },
+          {
+            name: '朔州',
+            value: 29
+          }
+        ],
+      }
+
     };
   },
   mounted() {
@@ -143,7 +185,7 @@ export default {
         },
         yAxis: {
           type: 'value',
-          
+
           // 坐标轴样式
           axisLine: {
             show: true,
@@ -218,12 +260,50 @@ export default {
 
     .top {
       flex: 1;
+
+      .pie {
+        width: 100%;
+        height: 80%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .pie-chart {
+          width: 100%;
+          height: 100%;
+        }
+      }
     }
     .center {
       flex: 1;
+
+      .bar {
+        width: 100%;
+        height: 80%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .bar-chart {
+          width: 100%;
+          height: 100%;
+        }
+      }
     }
     .bottom {
       flex: 1;
+      .rank {
+        width: 100%;
+        height: 80%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .scroll-ranking-board {
+          width:300px;
+          height:200px;
+        }
+      }
     }
     .title {
       color: #fff;

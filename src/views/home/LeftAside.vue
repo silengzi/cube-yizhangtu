@@ -131,14 +131,20 @@
           <div class="monitor">
             <div class="monitor-top">
               <div class="monitor-sum monitor-top-item">
-                <img src="@/assets/合计.png" alt="">
+                <img
+                  src="@/assets/合计.png"
+                  alt=""
+                >
                 <div class="monitor-sum-index monitor-top-desc">
                   <label class="sum text">合计</label>
                   <label class="sum-index index">21</label>
                 </div>
               </div>
               <div class="monitor-camera monitor-top-item">
-                <img src="@/assets/摄像头.png" alt="">
+                <img
+                  src="@/assets/摄像头.png"
+                  alt=""
+                >
                 <div class="monitor-camera-index monitor-top-desc">
                   <label class="camera text">摄像头</label>
                   <label class="camera-index index">2</label>
@@ -200,13 +206,39 @@
         <div class="bottom">
           <dv-decoration-7
             class="titleDecoration"
-            style="width:150px;height:30px;"
+            style="width:160px;height:30px;"
           >
             <div class="title">
-              报警情况
+              野生动物保护
             </div>
           </dv-decoration-7>
           <dv-decoration-10 style="width:100%;height:5px;" />
+          <!-- 转换按钮 -->
+          <div class="convert">
+            <el-button
+              type="primary"
+              size="mini"
+              @click="toggleChart"
+            >切换</el-button>
+          </div>
+          <div
+            class="wildlife"
+            v-show="show==1"
+          >
+            <dv-conical-column-chart
+              :config="configWildLife"
+              class="wildlife-chart"
+            />
+          </div>
+          <div
+            class="wild-plant"
+            v-show="show==2"
+          >
+            <dv-conical-column-chart
+              :config="configPlant"
+              class="wild-plant-chart"
+            />
+          </div>
         </div>
       </div>
     </dv-border-box-10>
@@ -218,11 +250,30 @@ export default {
   name: '',
   data() {
     return {
-      updateTime: '2024-03-19 11:03:55'
+      updateTime: '2024-03-19 11:03:55',
+      configWildLife: {
+        data: [
+          { name: '国家一级保护动物', value: 20 },
+          { name: '国家二级保护动物', value: 50 },
+          { name: '三有保护动物', value: 100 },
+          { name: '濒危物种', value: 60 },
+        ],
+        fontSize: 7.8,
+      },
+      show: 1,
+      configPlant: {
+        data: [
+          { name: '国家重点保护植物', value: 20 },
+          { name: '省级重点保护植物', value: 50 },
+          { name: '市级重点保护植物', value: 100 },
+        ]
+      }
     };
   },
   methods: {
-
+    toggleChart() {
+      this.show = this.show === 1 ? 2 : 1;
+    }
   }
 };
 </script>
@@ -332,7 +383,7 @@ export default {
                 width: 20px;
                 height: 20px;
               }
-  
+
               label {
                 color: #bcb8b8;
                 margin-left: 2px;
@@ -366,7 +417,7 @@ export default {
               height: 38px;
               display: flex;
               flex-direction: column;
-              justify-content:space-between;
+              justify-content: space-between;
               align-items: center;
 
               .text {
@@ -423,6 +474,37 @@ export default {
     }
     .bottom {
       flex: 1;
+      overflow: hidden;
+
+      .convert {
+        float: right;
+      }
+
+      .wildlife {
+        width: 100%;
+        height: 60%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .wildlife-chart {
+          width: 360px;
+          height: 200px;
+        }
+      }
+
+      .wild-plant {
+        width: 100%;
+        height: 60%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .wild-plant-chart {
+          width: 360px;
+          height: 200px;
+        }
+      }
     }
     .title {
       color: #fff;
