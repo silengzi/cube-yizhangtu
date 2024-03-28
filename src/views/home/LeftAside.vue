@@ -12,12 +12,73 @@
                 天气监测
               </div>
             </dv-decoration-7>
-            <div class="weather">
+            <div
+              class="weather"
+              @mouseenter="showWeatherDetail = true"
+              @mouseleave="showWeatherDetail = false"
+            >
               <img
                 src="@/assets/天气.png"
                 alt=""
               >
               <span>预报</span>
+            </div>
+            <div
+              class="weather-detail"
+              v-show="showWeatherDetail"
+            >
+              <div class="weather-detail-description">
+                <div class="weather-today weather-detail-day">
+                  <div class="weather-day">今天</div>
+                  <div class="weather-date">3-15</div>
+                  <img
+                    src="@/assets/太阳.png"
+                    alt=""
+                  >
+                  <div class="weather-info">晴</div>
+                  <div class="weather-pollution">轻度污染</div>
+                </div>
+                <div class="weather-tommorrow weather-detail-day">
+                  <div class="weather-day">明天</div>
+                  <div class="weather-date">3-15</div>
+                  <img
+                    src="@/assets/太阳.png"
+                    alt=""
+                  >
+                  <div class="weather-info">晴</div>
+                  <div class="weather-pollution">中度污染</div>
+                </div>
+                <div class="weather-sunday weather-detail-day">
+                  <div class="weather-day">星期日</div>
+                  <div class="weather-date">3-15</div>
+                  <img
+                    src="@/assets/太阳.png"
+                    alt=""
+                  >
+                  <div class="weather-info">晴</div>
+                  <div class="weather-pollution">轻度污染</div>
+                </div>
+                <div class="weather-monday weather-detail-day">
+                  <div class="weather-day">星期一</div>
+                  <div class="weather-date">3-15</div>
+                  <img
+                    src="@/assets/太阳.png"
+                    alt=""
+                  >
+                  <div class="weather-info">晴</div>
+                  <div class="weather-pollution">轻度污染</div>
+                </div>
+                <div class="weather-tuesday weather-detail-day">
+                  <div class="weather-day">星期二</div>
+                  <div class="weather-date">3-15</div>
+                  <img
+                    src="@/assets/太阳.png"
+                    alt=""
+                  >
+                  <div class="weather-info">晴</div>
+                  <div class="weather-pollution">轻度污染</div>
+                </div>
+              </div>
             </div>
           </div>
           <dv-decoration-10 style="width:100%;height:5px;" />
@@ -208,8 +269,17 @@
             class="titleDecoration"
             style="width:160px;height:30px;"
           >
-            <div class="title">
+            <div
+              class="title"
+              v-show="show==1"
+            >
               野生动物保护
+            </div>
+            <div
+              class="title"
+              v-show="show==2"
+            >
+              野生植物保护
             </div>
           </dv-decoration-7>
           <dv-decoration-10 style="width:100%;height:5px;" />
@@ -221,20 +291,14 @@
               @click="toggleChart"
             >切换</el-button>
           </div>
-          <div
-            class="wildlife"
-            v-show="show==1"
-          >
+          <div class="wildlife">
             <dv-conical-column-chart
+              v-show="show==1"
               :config="configWildLife"
               class="wildlife-chart"
             />
-          </div>
-          <div
-            class="wild-plant"
-            v-show="show==2"
-          >
             <dv-conical-column-chart
+              v-show="show==2"
               :config="configPlant"
               class="wild-plant-chart"
             />
@@ -251,6 +315,7 @@ export default {
   data() {
     return {
       updateTime: '2024-03-19 11:03:55',
+
       configWildLife: {
         data: [
           { name: '国家一级保护动物', value: 20 },
@@ -266,8 +331,10 @@ export default {
           { name: '国家重点保护植物', value: 20 },
           { name: '省级重点保护植物', value: 50 },
           { name: '市级重点保护植物', value: 100 },
-        ]
-      }
+        ],
+        fontSize: 7.8,
+      },
+      showWeatherDetail: false,
     };
   },
   methods: {
@@ -298,11 +365,13 @@ export default {
 
     .top {
       flex: 1;
+      position: relative;
 
       .description {
         display: flex;
         justify-content: space-between;
         align-items: center;
+
         .weather {
           display: flex;
           align-items: center;
@@ -314,6 +383,58 @@ export default {
           span {
             color: #fff;
             font-size: 18px;
+          }
+        }
+
+        .weather-detail {
+          width: 300px;
+          height: 200px;
+          background-color: rgba(4, 47, 84, 0.7);
+          border-radius: 8px;
+          position: absolute;
+          top: 40px;
+          left: 325px;
+
+          .weather-detail-description {
+            display: flex;
+            justify-content: space-between;
+
+            .weather-detail-day {
+              display: flex;
+              flex-direction: column;
+              justify-content: space-around;
+              color: #fff;
+  
+              /* .weather-day, .weather-date, img, .weather-info, .weather-pollution {
+                flex: 1;
+              } */
+              .weather-day {
+                flex: 1;
+              }
+              .weather-date {
+                flex: 1;
+              }
+              .weather-info {
+                flex: 1;
+              }
+              .weather-pollution {
+                flex: 1;
+              }
+  
+              img {
+                flex: 1;
+                width: 20px;
+                height: 20px;
+              }
+            }
+          }
+
+        }
+        .weather:hover {
+          cursor: pointer;
+
+          .weather-detail {
+            display: block;
           }
         }
       }
@@ -491,15 +612,6 @@ export default {
           width: 360px;
           height: 200px;
         }
-      }
-
-      .wild-plant {
-        width: 100%;
-        height: 60%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
         .wild-plant-chart {
           width: 360px;
           height: 200px;
