@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import LayerList from "./components/Layerlist.vue"
+import LayerList from "./components/Layer.vue"
 export default {
   components: {
     LayerList

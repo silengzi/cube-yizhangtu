@@ -20,7 +20,7 @@
           >
           </el-date-picker>
         </div>
-        <div class="layerList">
+        <!-- <div class="layerList">
           <dv-border-box-12 class="mask" backgroundColor="rgb(4, 47, 84, 0.7)">
             <div>
               <div class="title">
@@ -56,7 +56,8 @@
               </div>
             </div>
           </dv-border-box-12>
-        </div>
+        </div> -->
+        <LayerList></LayerList>
         <div class="legend">
           <dv-border-box-12 backgroundColor="rgb(4, 47, 84, 0.7)">
             <span>图例</span>
@@ -74,9 +75,10 @@
 <script>
 // @ is an alias to /src
 import Header from '@/components/header.vue'
-import Map from '@/views/home/Map.vue'
-import LeftAside from '@/views/home/LeftAside.vue'
-import RightAside from '@/views/home/RightAside.vue'
+import Map from '@/views/home/components/Map.vue'
+import LeftAside from '@/views/home/components/LeftAside.vue'
+import RightAside from '@/views/home/components/RightAside.vue'
+import LayerList from '@/views/home/components/LayerList.vue'
 
 export default {
   name: 'Home',
@@ -85,6 +87,7 @@ export default {
     Map,
     LeftAside,
     RightAside,
+    LayerList,
   },
   data() {
     return {
@@ -173,18 +176,7 @@ export default {
 .home {
   position: relative;
   
-  // .left, .right {
-  //   /deep/ .dv-border-box-10 .border-box-content {
-  //     background-color: #0c1225;
-  //     background-color: #042650;
-  //     opacity: 0.7;
-  //     margin: 7px;
-  //     width: 100%;
-  //     height: calc(100vh - 67px - 14px);
-  //     border-radius: 10px;
-  //     box-sizing: border-box;
-  //   }
-  // }
+ 
   .mainMap {
     width: 100%;
     height: calc(100vh - 67px);
@@ -196,8 +188,6 @@ export default {
   .select {
     position: relative;
     .el-cascader {
-      // width: 200px;
-      // height: 150px;
       z-index: 2;
       position: absolute;
       top: 5px;
@@ -206,182 +196,12 @@ export default {
   }
   .date {
     position: absolute;
-    // width: 200px;
-    // height: 150px;
     z-index: 2;
     position: absolute;
     top: 72px;
     left: calc(222px + 21%);
   }
-  .layerList {
-    // position: relative;
-    z-index: 2;
-    position: absolute;
-    top: 67px;
-    left: calc(100vw - 20% - 220px);
-    // background-color: red;
-    width: 200px;
-    height: 500px;
-    .dv-border-box-12 {
-      padding: 10px;
-      .title {
-        height: 30px;
-        display: flex;
-        justify-content: left;
-        align-items: center;
-        img {
-          height: 100%;
-        }
-        span {
-          margin-left: 5px;
-          color: #fff;
-        }
-      }
-      .layerContent {
-        width: 100%;
-
-        .el-collapse {
-          border-bottom: 0;
-          margin-top: 10px;
-          padding: 10px;
-
-          .el-checkbox-group,  .el-radio-group{
-            margin-left: 10px;
-          }
-        }
-        ::v-deep .el-collapse-item__content {
-          padding-bottom: 0;
-          // line-height: 0;
-        }
-        ::v-deep .el-collapse-item__header {
-          color: #fff;
-          background-color: transparent;  // 背景色变为透明，即不显示任何颜色
-          border-bottom: none;
-          font-size: 16px;
-          height: 30px;
-        }
-        ::v-deep .el-collapse-item__wrap {
-          background-color: transparent;  // 背景色变为透明，即不显示任何颜色
-          border-bottom: none;
-        }
-        ::v-deep .el-checkbox__label {
-          color: #fff;
-          font-size: 15px;
-        }
-        ::v-deep .el-checkbox__input.is-checked+.el-checkbox__label {
-          color: #409EFF;
-        }
-        ::v-deep .el-checkbox, .el-checkbox__input {
-          display: block;
-        }
-        .el-radio {
-          display: block;
-          margin-bottom: 5px;
-        }
-        ::v-deep .el-radio__label {
-          color: #fff;
-        }
-      }
-    }
-
-
-    // .dv-border-box-12 {
-    //   // width: 200px;
-    //   // min-height: 300px;
-    //   z-index: 2;
-    //   position: absolute;
-    //   top: 0;
-    //   left: calc(100vw - 300px - 200px);
-    //   background-color: red;
-
-
-      // .title {
-      //   position: relative;
-      //   i {
-      //     img {
-      //       width: 25px;
-      //       height: 25px;
-      //       // display: inline-block;
-      //       position: absolute;
-      //       top: 15px;
-      //       left: 12px;
-      //     }
-      //   }
-      //   span {
-      //     color: #fff;
-      //     // display: inline-block;
-      //     position: absolute;
-      //     top: 15px;
-      //     left: 42px;
-      //   }
-      // }
-      // .title::after {
-      //   content: "";
-      //   position: absolute;
-      //   left: 0;
-      //   top: 50px;
-      //   right: 0;
-      //   width: 90%;
-      //   margin: auto;
-      //   height: 1px;
-      //   background-color: #1dabf2;
-      // }
-    // }
-    // .layerContent {
-    //   position: absolute;
-    //   z-index: 2;
-    //   top: 55px;
-    //   left: 17px;
-    //   color: #fff;
-
-    //   .el-collapse {
-    //     border-top: none;
-    //     border-bottom: none;
-      
-    //     /deep/ .el-collapse-item__content {
-    //       padding-bottom: 0;
-    //       // line-height: 0;
-    //     }
-    //     /deep/ .el-collapse-item__header {
-    //       color: #fff;
-    //       background-color: transparent;  // 背景色变为透明，即不显示任何颜色
-    //       border-bottom: none;
-    //       font-size: 16px;
-    //       height: 30px;
-    //     }
-    //     /deep/ .el-collapse-item__wrap {
-    //       background-color: transparent;  // 背景色变为透明，即不显示任何颜色
-    //       border-bottom: none;
-    //     }
-    //     /deep/ .el-checkbox__label {
-    //       color: #fff;
-    //       font-size: 15px;
-    //     }
-    //     /deep/ .el-checkbox__input.is-checked+.el-checkbox__label {
-    //       color: #409EFF;
-    //     }
-    //     /deep/ .el-checkbox, .el-checkbox__input {
-    //       display: block;
-    //     }
-    //     .el-radio {
-    //       display: block;
-    //       margin-bottom: 5px;
-    //     }
-    //     /deep/ .el-radio__label {
-    //       color: #fff;
-    //     }
-    //   }
-    // }
-    /* /deep/ .dv-border-box-12 .border-box-content {
-      background-color: #042650;
-      opacity: 0.7;
-      margin: 6px;
-      border-radius: 10px;
-      box-sizing: border-box;
-      width: 188px;
-      height: 288px;
-    } */
-  }
+  
   .legend {
     position: relative;
     .dv-border-box-12 {
@@ -394,21 +214,11 @@ export default {
 
       span {
         color: #fff;
-        // display: inline-block;
         position: absolute;
         top: 15px;
         left: 18px;
       }
     }
-    // /deep/ .dv-border-box-12 .border-box-content {
-    //   background-color: #042650;
-    //   opacity: 0.7;
-    //   margin: 6px;
-    //   border-radius: 10px;
-    //   box-sizing: border-box;
-    //   width: 188px;
-    //   height: 138px;
-    // }
   }
 }
 </style>
