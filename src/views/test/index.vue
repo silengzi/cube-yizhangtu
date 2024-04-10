@@ -1,15 +1,17 @@
 <template>
   <div>
-    <!-- -->
-    <LayerList />
+    <!-- <LayerList /> -->
+    <AMap />
   </div>
 </template>
 
 <script>
 import LayerList from "./components/Layer.vue"
+import AMap from "./components/AMap.vue"
 export default {
   components: {
-    LayerList
+    LayerList,
+    AMap
   }
 }
 </script>
