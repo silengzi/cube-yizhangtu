@@ -168,7 +168,7 @@ export default {
         // TODO: 隐藏底图 - this.$refs.map.toggleBaseLayer(false);
         /**
          * map 组件里可以写个方法专门控制底图显隐
-         * 
+         *
          * boolean为true或false，layer为底图
          * toggleBaseLayer(boolean) {
          *   layer.setVisible(boolean)
@@ -303,102 +303,6 @@ export default {
         }
       }
     }
-
-    // .dv-border-box-12 {
-    //   // width: 200px;
-    //   // min-height: 300px;
-    //   z-index: 2;
-    //   position: absolute;
-    //   top: 0;
-    //   left: calc(100vw - 300px - 200px);
-    //   background-color: red;
-
-    // .title {
-    //   position: relative;
-    //   i {
-    //     img {
-    //       width: 25px;
-    //       height: 25px;
-    //       // display: inline-block;
-    //       position: absolute;
-    //       top: 15px;
-    //       left: 12px;
-    //     }
-    //   }
-    //   span {
-    //     color: #fff;
-    //     // display: inline-block;
-    //     position: absolute;
-    //     top: 15px;
-    //     left: 42px;
-    //   }
-    // }
-    // .title::after {
-    //   content: "";
-    //   position: absolute;
-    //   left: 0;
-    //   top: 50px;
-    //   right: 0;
-    //   width: 90%;
-    //   margin: auto;
-    //   height: 1px;
-    //   background-color: #1dabf2;
-    // }
-    // }
-    // .layerContent {
-    //   position: absolute;
-    //   z-index: 2;
-    //   top: 55px;
-    //   left: 17px;
-    //   color: #fff;
-
-    //   .el-collapse {
-    //     border-top: none;
-    //     border-bottom: none;
-
-    //     /deep/ .el-collapse-item__content {
-    //       padding-bottom: 0;
-    //       // line-height: 0;
-    //     }
-    //     /deep/ .el-collapse-item__header {
-    //       color: #fff;
-    //       background-color: transparent;  // 背景色变为透明，即不显示任何颜色
-    //       border-bottom: none;
-    //       font-size: 16px;
-    //       height: 30px;
-    //     }
-    //     /deep/ .el-collapse-item__wrap {
-    //       background-color: transparent;  // 背景色变为透明，即不显示任何颜色
-    //       border-bottom: none;
-    //     }
-    //     /deep/ .el-checkbox__label {
-    //       color: #fff;
-    //       font-size: 15px;
-    //     }
-    //     /deep/ .el-checkbox__input.is-checked+.el-checkbox__label {
-    //       color: #409EFF;
-    //     }
-    //     /deep/ .el-checkbox, .el-checkbox__input {
-    //       display: block;
-    //     }
-    //     .el-radio {
-    //       display: block;
-    //       margin-bottom: 5px;
-    //     }
-    //     /deep/ .el-radio__label {
-    //       color: #fff;
-    //     }
-    //   }
-    // }
-    /* /deep/ .dv-border-box-12 .border-box-content {
-      background-color: #042650;
-      opacity: 0.7;
-      margin: 6px;
-      border-radius: 10px;
-      box-sizing: border-box;
-      width: 188px;
-      height: 288px;
-    } */
   }
 }
 </style>
