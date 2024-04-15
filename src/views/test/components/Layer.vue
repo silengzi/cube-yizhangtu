@@ -23,7 +23,7 @@
               </div>
               <div class="layerContent">
                 <el-collapse v-model="layerName">
-                  <el-collapse-item class="item" title="行政区划" name="1">
+                  <el-collapse-item class="item" title="基础图层" name="1">
                     <el-checkbox-group
                       v-model="administration"
                       @change="handleChangeBaseLayer"
@@ -51,6 +51,15 @@
                       <el-radio label="取水点"></el-radio>
                       <el-radio label="防火道路"></el-radio>
                       <el-radio label="阻隔带"></el-radio>
+                    </el-radio-group>
+                  </el-collapse-item>
+                  <el-collapse-item class="item" title="野生动植物" name="4">
+                    <el-radio-group
+                      v-model="layertype"
+                      @input="handleChangeLayertype"
+                    >
+                      <el-radio label="野生动物"></el-radio>
+                      <el-radio label="野生植物"></el-radio>
                     </el-radio-group>
                   </el-collapse-item>
                 </el-collapse>
@@ -144,7 +153,7 @@ export default {
       ],
       dateValue: "",
       layerName: ["1"],
-      administration: [], // 行政区划
+      administration: [], // 基础图层
       layertype: "", // 图层类别
     };
   },
@@ -153,18 +162,18 @@ export default {
      * 用于处理修改基本图层
      */
     handleChangeBaseLayer(layers) {
-      console.log("选择了:", layers);
+      // console.log("选择了:", layers);
       if (layers.includes("行政区划")) {
-        console.log("行政区划勾选");
+        // console.log("行政区划勾选");
       } else {
-        console.log("行政区划取消");
+        // console.log("行政区划取消");
       }
 
       if (layers.includes("底图")) {
-        console.log("行底图勾选");
+        // console.log("行底图勾选");
         // TODO: 显示底图 - this.$refs.map.toggleBaseLayer(true);
       } else {
-        console.log("底图取消");
+        // console.log("底图取消");
         // TODO: 隐藏底图 - this.$refs.map.toggleBaseLayer(false);
         /**
          * map 组件里可以写个方法专门控制底图显隐
@@ -175,14 +184,28 @@ export default {
          * }
          */
       }
+
+      this.handleChangeLayer()
     },
     /**
      * 用于处理图层类别修改
      * @param {*} val
      */
     handleChangeLayertype(val) {
-      console.log("选择了:" + val);
+      // console.log("选择了:" + val);
+
+      this.handleChangeLayer()
     },
+    /**
+     * 监听所有图层的修改
+     */
+    handleChangeLayer() {
+      const layerList = {
+        baseLayer: this.administration,
+        radio: this.layertype
+      }
+      this.$EventBus.$emit("handleChangeLayer", layerList)
+    }
   },
 };
 </script>
