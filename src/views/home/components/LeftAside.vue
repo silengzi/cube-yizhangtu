@@ -344,7 +344,7 @@ export default {
         ],
         fontSize: 7.8,
       },
-      showWeatherDetail: true,
+      showWeatherDetail: false,
       forecasts: null,
     };
   },
