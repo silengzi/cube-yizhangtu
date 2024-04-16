@@ -3,8 +3,7 @@
     <div class="legend">
       <dv-border-box-12 backgroundColor="rgb(4, 47, 84, 0.7)">
         <div class="title">图例</div>
-        <div class="legend-item" v-if="radio == '野生动物'"><i class="icon"><img src="~@/assets/legend/野生保护动物.png" alt=""></i><span>野生动物</span></div>
-        <div class="legend-item" v-if="radio == '野生植物'"><i class="icon"><img src="~@/assets/legend/野生保护植物.png" alt=""></i><span>野生植物</span></div>
+        <div class="legend-item" v-for="item in radioList" :key="item" v-show="checkList.includes(item)"><i class="icon"><img :src="require('@/assets/legend/' + item + '.png')" alt=""></i><span>{{ item }}</span></div>
       </dv-border-box-12>
     </div>
   </div>
@@ -16,7 +15,8 @@ export default {
   components: {},
   data() {
     return {
-      radio: '', // 单选
+      radioList: ['云台', '卡口', '摄像头', '红外相机', '声光报警器', '气体检测器', '无人机', '野生动物', '野生植物', '火灾告警', '非法活动', '乔木', '灌木', '草本'],
+      checkList: [], // 勾选的图层，需要显示对应的图例
     };
   },
   methods: {},
@@ -24,7 +24,7 @@ export default {
     // 接收
     this.$EventBus.$on("handleChangeLayer", (layerList) => {
       console.log(layerList, "layerList")
-      this.radio = layerList.radio
+      this.checkList = JSON.parse(JSON.stringify([...layerList.baseLayer, layerList.radio]))
     })
   },
   beforeDestroy() {

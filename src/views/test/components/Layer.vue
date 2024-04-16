@@ -24,42 +24,48 @@
               <div class="layerContent">
                 <el-collapse v-model="layerName">
                   <el-collapse-item class="item" title="基础图层" name="1">
-                    <el-checkbox-group
-                      v-model="administration"
-                      @change="handleChangeBaseLayer"
-                    >
-                      <el-checkbox label="行政区划" checked></el-checkbox>
+                    <el-checkbox-group v-model="baseLayer" @change="handleChangeBaseLayer">
                       <el-checkbox label="底图" checked></el-checkbox>
+                      <el-checkbox label="行政区" checked></el-checkbox>
+                      <el-checkbox label="路网" checked></el-checkbox>
+                      <el-checkbox label="林区" checked></el-checkbox>
                     </el-checkbox-group>
                   </el-collapse-item>
-                  <el-collapse-item class="item" title="监控设备" name="2">
-                    <el-radio-group
-                      v-model="layertype"
-                      @input="handleChangeLayertype"
-                    >
-                      <el-radio label="监控塔"></el-radio>
+                  <el-collapse-item class="item" title="巡护" name="2">
+                    <el-radio-group v-model="radioLayer" @change="handleChangeLayertype">
+                      <el-radio label="巡护员"></el-radio>
+                      <el-radio label="巡护路线"></el-radio>
+                      <el-radio label="巡护区域"></el-radio>
+                    </el-radio-group>
+                  </el-collapse-item>
+                  <el-collapse-item class="item" title="监控设备" name="3">
+                    <el-radio-group v-model="radioLayer" @change="handleChangeLayertype">
+                      <el-radio label="云台"></el-radio>
                       <el-radio label="卡口"></el-radio>
+                      <el-radio label="摄像头"></el-radio>
+                      <el-radio label="红外相机"></el-radio>
+                      <el-radio label="声光报警器"></el-radio>
+                      <el-radio label="气体检测器"></el-radio>
+                      <el-radio label="无人机"></el-radio>
                     </el-radio-group>
                   </el-collapse-item>
-                  <el-collapse-item class="item" title="防火设施" name="3">
-                    <el-radio-group
-                      v-model="layertype"
-                      @input="handleChangeLayertype"
-                    >
-                      <el-radio label="消防队"></el-radio>
-                      <el-radio label="物资库"></el-radio>
-                      <el-radio label="取水点"></el-radio>
-                      <el-radio label="防火道路"></el-radio>
-                      <el-radio label="阻隔带"></el-radio>
-                    </el-radio-group>
-                  </el-collapse-item>
-                  <el-collapse-item class="item" title="野生动植物" name="4">
-                    <el-radio-group
-                      v-model="layertype"
-                      @input="handleChangeLayertype"
-                    >
+                  <el-collapse-item class="item" title="动植物保护" name="4">
+                    <el-radio-group v-model="radioLayer" @change="handleChangeLayertype">
                       <el-radio label="野生动物"></el-radio>
                       <el-radio label="野生植物"></el-radio>
+                    </el-radio-group>
+                  </el-collapse-item>
+                  <el-collapse-item class="item" title="告警" name="5">
+                    <el-radio-group v-model="radioLayer" @change="handleChangeLayertype">
+                      <el-radio label="火灾告警"></el-radio>
+                      <el-radio label="非法活动"></el-radio>
+                    </el-radio-group>
+                  </el-collapse-item>
+                  <el-collapse-item class="item" title="古树名木" name="6">
+                    <el-radio-group v-model="radioLayer" @change="handleChangeLayertype">
+                      <el-radio label="乔木"></el-radio>
+                      <el-radio label="灌木"></el-radio>
+                      <el-radio label="草本"></el-radio>
                     </el-radio-group>
                   </el-collapse-item>
                 </el-collapse>
@@ -153,8 +159,8 @@ export default {
       ],
       dateValue: "",
       layerName: ["1"],
-      administration: [], // 基础图层
-      layertype: "", // 图层类别
+      baseLayer: [], // 基础图层
+      radioLayer: "", // 图层类别
     };
   },
   methods: {
@@ -185,7 +191,7 @@ export default {
          */
       }
 
-      this.handleChangeLayer()
+      this.handleChangeLayer();
     },
     /**
      * 用于处理图层类别修改
@@ -194,18 +200,18 @@ export default {
     handleChangeLayertype(val) {
       // console.log("选择了:" + val);
 
-      this.handleChangeLayer()
+      this.handleChangeLayer();
     },
     /**
      * 监听所有图层的修改
      */
     handleChangeLayer() {
       const layerList = {
-        baseLayer: this.administration,
-        radio: this.layertype
-      }
-      this.$EventBus.$emit("handleChangeLayer", layerList)
-    }
+        baseLayer: this.baseLayer,
+        radio: this.radioLayer,
+      };
+      this.$EventBus.$emit("handleChangeLayer", layerList);
+    },
   },
 };
 </script>
