@@ -20,49 +20,8 @@
           >
           </el-date-picker>
         </div>
-        <!-- <div class="layerList">
-          <dv-border-box-12 class="mask" backgroundColor="rgb(4, 47, 84, 0.7)">
-            <div>
-              <div class="title">
-                <img
-                  src="@/assets/layers.png"
-                  alt=""
-                >
-                <span>图层列表</span>
-              </div>
-              <div class="layerContent">
-                <el-collapse v-model="layerName">
-                  <el-collapse-item class="item" title="行政区划" name="1">
-                    <el-checkbox-group v-model="administration">
-                      <el-checkbox label="行政区划" checked></el-checkbox>
-                    </el-checkbox-group>
-                  </el-collapse-item>
-                  <el-collapse-item class="item" title="监控设备" name="2">
-                    <el-radio-group v-model="monitor">
-                      <el-radio label="监控塔"></el-radio>
-                      <el-radio label="卡口"></el-radio>
-                    </el-radio-group>
-                  </el-collapse-item>
-                  <el-collapse-item class="item" title="防火设施" name="3">
-                    <el-radio-group v-model="facilities">
-                      <el-radio label="消防队"></el-radio>
-                      <el-radio label="物资库"></el-radio>
-                      <el-radio label="取水点"></el-radio>
-                      <el-radio label="防火道路"></el-radio>
-                      <el-radio label="阻隔带"></el-radio>
-                    </el-radio-group>
-                  </el-collapse-item>
-                </el-collapse>
-              </div>
-            </div>
-          </dv-border-box-12>
-        </div> -->
         <LayerList></LayerList>
-        <div class="legend">
-          <dv-border-box-12 backgroundColor="rgb(4, 47, 84, 0.7)">
-            <span>图例</span>
-          </dv-border-box-12>
-        </div>
+        <Legend></Legend>
       </div>
       <RightAside></RightAside>
     </div>
@@ -79,6 +38,7 @@ import Map from '@/views/home/components/Map.vue'
 import LeftAside from '@/views/home/components/LeftAside.vue'
 import RightAside from '@/views/home/components/RightAside.vue'
 import LayerList from '@/views/home/components/LayerList.vue'
+import Legend from '@/views/home/components/Legend.vue'
 
 export default {
   name: 'Home',
@@ -88,6 +48,7 @@ export default {
     LeftAside,
     RightAside,
     LayerList,
+    Legend,
   },
   data() {
     return {
@@ -202,23 +163,6 @@ export default {
     left: calc(222px + 21%);
   }
   
-  .legend {
-    position: relative;
-    .dv-border-box-12 {
-      width: 200px;
-      height: 150px;
-      z-index: 2;
-      position: absolute;
-      top: calc(100vh - 220px);
-      left: 20%;
-
-      span {
-        color: #fff;
-        position: absolute;
-        top: 15px;
-        left: 18px;
-      }
-    }
-  }
+  
 }
 </style>

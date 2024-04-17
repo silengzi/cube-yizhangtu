@@ -3,7 +3,15 @@
     <div class="legend">
       <dv-border-box-12 backgroundColor="rgb(4, 47, 84, 0.7)">
         <div class="title">图例</div>
-        <div class="legend-item" v-for="item in radioList" :key="item" v-show="checkList.includes(item)"><i class="icon"><img :src="require('@/assets/legend/' + item + '.png')" alt=""></i><span>{{ item }}</span></div>
+        <div
+          class="legend-item"
+          v-for="item in radioList"
+          :key="item"
+          v-show="checkList.includes(item)"
+        ><i class="icon"><img
+              :src="require('@/assets/legend/' + item + '.png')"
+              alt=""
+            ></i><span>{{ item }}</span></div>
       </dv-border-box-12>
     </div>
   </div>
