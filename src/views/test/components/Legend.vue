@@ -3,6 +3,7 @@
     <div class="legend">
       <dv-border-box-12 backgroundColor="rgb(4, 47, 84, 0.7)">
         <div class="title">图例</div>
+        
         <div
           class="legend-item"
           v-for="item in radioList"

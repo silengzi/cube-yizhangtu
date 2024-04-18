@@ -1,8 +1,8 @@
 <template>
   <div>
-    <LayerList />
-    <Legend />
-    <!-- <AMap /> -->
+    <!-- <LayerList /> -->
+    <!-- <Legend /> -->
+    <AMap />
   </div>
 </template>
 
