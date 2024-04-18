@@ -43,7 +43,7 @@
               title="巡护"
               name="2"
             >
-              <el-radio-group v-model="patrol">
+              <el-radio-group v-model="patrol" @change="handleChangePatrolLayer">
                 <el-radio label="巡护员"></el-radio>
                 <el-radio label="巡护路线"></el-radio>
                 <el-radio label="巡护区域"></el-radio>
@@ -54,7 +54,7 @@
               title="监控设备"
               name="3"
             >
-              <el-radio-group v-model="monitor">
+              <el-radio-group v-model="monitor" @change="handleChangeMonitorLayer">
                 <el-radio label="云台"></el-radio>
                 <el-radio label="卡口"></el-radio>
                 <el-radio label="摄像头"></el-radio>
@@ -69,7 +69,7 @@
               title="动植物保护"
               name="4"
             >
-              <el-radio-group v-model="protect">
+              <el-radio-group v-model="protect" @change="handleChangeProtectLayer">
                 <el-radio label="野生动物"></el-radio>
                 <el-radio label="野生植物"></el-radio>
               </el-radio-group>
@@ -79,7 +79,7 @@
               title="告警"
               name="5"
             >
-              <el-radio-group v-model="alarm">
+              <el-radio-group v-model="alarm" @change="handleChangeAlarmLayer">
                 <el-radio label="火灾告警"></el-radio>
                 <el-radio label="非法活动"></el-radio>
               </el-radio-group>
@@ -89,7 +89,7 @@
               title="古树名木"
               name="6"
             >
-              <el-radio-group v-model="plant">
+              <el-radio-group v-model="plant" @change="handleChangePlantLayer">
                 <el-radio label="乔木"></el-radio>
                 <el-radio label="灌木"></el-radio>
                 <el-radio label="草本"></el-radio>
@@ -111,14 +111,48 @@ export default {
       basicLayer: [], // 基础图层
       patrol: '', // 巡护
       monitor: '', // 监控
-      facilities: '', // 防火设施
       protect: '', // 动植物保护
       alarm: '', // 告警
       plant: '', // 古树名木
     };
   },
   methods: {
-
+    // 监听所有图层的修改
+    handleChangeLayer() {
+      const layerList = {
+        basicLayer: this.basicLayer,
+        patrol: this.patrol,
+        monitor: this.monitor,
+        protect: this.protect,
+        alarm: this.alarm,
+        plant: this.plant,
+      }
+      this.$EventBus.$emit("handleChangeLayer", layerList)
+    },
+    /**
+     * 用于处理图层类别修改
+     * @param {*} val
+     */
+    handleChangePatrolLayer(val) {
+      this.handleChangeLayer()
+    },
+    handleChangeMonitorLayer(val) {
+      this.handleChangeLayer()
+    },
+    handleChangeProtectLayer(val) {
+      this.handleChangeLayer()
+    },
+    handleChangeAlarmLayer(val) {
+      this.handleChangeLayer()
+    },
+    handleChangePlantLayer(val) {
+      this.handleChangeLayer()
+    },
+    // 处理修改基础图层
+    handleChangeBasicLayer(layers) {
+      // console.log('选择了:', layers)
+      this.handleChangeLayer()
+    }
   }
 };
 </script>

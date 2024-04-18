@@ -25,8 +25,8 @@ export default {
   name: '',
   data() {
     return {
-        radioList: ['云台', '卡口', '摄像头', '红外相机', '声光报警器', '气体检测器', '无人机', '野生动物', '野生植物', '火灾告警', '非法活动', '乔木', '灌木', '草本'],
-        checkList: [],   // 勾选的图层，需要显示对应的图例
+      radioList: ['云台', '卡口', '摄像头', '红外相机', '声光报警器', '气体检测器', '无人机', '野生动物', '野生植物', '火灾告警', '非法活动', '乔木', '灌木', '草本'],
+      checkList: [],   // 勾选的图层，需要显示对应的图例
     };
   },
   methods: {},
@@ -34,7 +34,7 @@ export default {
     // 接收
     this.$EventBus.$on("handleChangeLayer", (layerList) => {
       console.log(layerList, "layerList")
-      this.checkList = JSON.parse(JSON.stringify([...layerList.baseLayer, layerList.radio]))
+      this.checkList = JSON.parse(JSON.stringify([...layerList.basicLayer, layerList.patrol, layerList.monitor, layerList.protect, layerList.alarm, layerList.plant]))
     })
   },
   beforeDestroy() {
