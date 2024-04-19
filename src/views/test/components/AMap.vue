@@ -55,7 +55,7 @@ export default {
   name: "AMap",
   data() {
     return {
-      isShow: false,
+      isShow: true,
       forecasts: null,
     };
   },

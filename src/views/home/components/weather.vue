@@ -4,23 +4,27 @@
     v-if="forecasts"
   >
     <div class="address">{{forecasts.province + " " + forecasts.city + " 更新时间: " + forecasts.reporttime}}</div>
-    <div class="weather-detail-description">
+    <div class="weather-detail-desc">
+      <div class="weather-detail-description">
         <div
-            class="weather-detail-day"
-            v-for="item in forecasts.casts"
-            :key="item.date"
+          class="weather-detail-day"
+          v-for="item in forecasts.casts"
+          :key="item.date"
         >
-            <div class="weather-day">{{"周" + item.week}}</div>
-            <div class="weather-date">{{item.date}}</div>
-            <div class="day-weather">
+          <div class="weather-day">{{"周" + item.week}}</div>
+          <div class="weather-date">{{item.date}}</div>
+          <div class="day-weather">
             <img
-                src="@/assets/太阳.png"
-                alt=""
+              src="@/assets/太阳.png"
+              alt=""
             >
             <div class="weather-info">{{item.dayweather}}</div>
-            </div>
-            <div class="line">
-                <!-- <div
+          </div>
+          <div class="weather-pollution">轻度污染</div>
+        </div>
+      </div>
+      <div class="line">
+        <!-- <div
                 class="line-chart"
                 ref="lineChart"
                 >{{item.daytemp}}℃</div>
@@ -28,13 +32,12 @@
                 class="line-chart"
                 ref="lineChart"
                 >{{item.nighttemp}}℃</div> -->
-                <div
-                class="line-chart"
-                ref="lineChart"
-                ></div>
-            </div>
-            <div class="weather-pollution">轻度污染</div>
-        </div>
+        <div
+          class="line-chart"
+          ref="lineChart"
+          style="width: 300px; height: 180px;"
+        ></div>
+      </div>
     </div>
   </div>
 </template>
@@ -68,33 +71,66 @@ export default {
         .then((response) => {
           // console.log(response.data);
           this.forecasts = response.data.forecasts[0]
+          this.$nextTick(() => {
+            this.renderLineChart()
+          })
         })
         .catch(function (error) {
           console.log(error);
         });
 
-      axios.get(url2)
-        .then(function (response) {
-          // console.log(response.data);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+      // axios.get(url2)
+      //   .then(function (response) {
+      //     // console.log(response.data);
+      //   })
+      //   .catch(function (error) {
+      //     console.log(error);
+      //   });
     },
     renderLineChart() {
       const lineChart = echarts.init(this.$refs.lineChart);
       const option = {
+        grid: [
+          {
+            top: '15%',
+          },
+          {
+            bottom: '10%',
+          },
+        ],
         xAxis: {
           type: 'category',
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+          data: ['Mon', 'Tue', 'Wed', 'Thu'],
+          show: false,
         },
         yAxis: {
-          type: 'value'
+          type: 'value',
+          show: false,
         },
-        series: [{
-          data: [820, 932, 901, 934, 1290, 1330, 1320],
-          type: 'line'
-        }]
+        series: [
+          {
+            data: [820, 932, 901, 934],
+            type: 'line',
+            label: {
+              show: true,
+              textStyle: {
+                color: 'white'
+              }
+            },
+            smooth: true,
+          },
+          {
+            data: [234, 345, 475, 568],
+            type: 'line',
+            label: {
+              show: true,
+              textStyle: {
+                color: 'white'
+              }
+            },
+            smooth: true,
+          },
+        ]
       }
       lineChart.setOption(option);
     },
@@ -120,38 +156,39 @@ export default {
     border-bottom: 1px solid;
   }
 
-  .weather-detail-description {
+  .weather-detail-desc {
     display: flex;
-    justify-content: space-around;
+    flex-direction: column;
     width: 300px;
     height: 200px;
 
-    .weather-detail-day {
+    .weather-detail-description {
       display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      align-items: center;
+      justify-content: space-around;
 
-      img {
-        width: 20px;
-        height: 20px;
-      }
-
-      .weather-date {
-        font-size: 12px;
-      }
-
-      .line {
-        width: 100%;
-        height: 50px;
+      .weather-detail-day {
         display: flex;
-        flex-direction: column;;
-        justify-content: space-around;
+        flex-direction: column;
+        justify-content: space-between;
         align-items: center;
 
-       /*  .line-chart {
-          width: 100%;
-          height: 100%;
+        img {
+          width: 20px;
+          height: 20px;
+        }
+
+        .weather-date {
+          font-size: 12px;
+        }
+
+        /* /deep/ .line {
+            position: absolute;
+            top: -32px;
+          /deep/ .line-chart {
+            /deep/ canvas {
+
+            }
+          }
         } */
       }
     }
