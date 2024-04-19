@@ -15,16 +15,16 @@
           </el-date-picker>
         </div>
         <div class="layerList">
-          <dv-border-box-12 class="mask" backgroundColor="rgb(4, 47, 84, 0.7)">
+          <dv-border-box-12 ref="border-box" class="mask"  backgroundColor="rgb(4, 47, 84, 0.7)">
             <div>
               <div class="title">
                 <img src="@/assets/layers.png" alt="" />
                 <span>图层列表</span>
               </div>
               <div class="layerContent">
-                <el-collapse v-model="layerName">
+                <el-collapse v-model="layerName" @click.native="handleClickLayerList">
                   <el-collapse-item class="item" title="基础图层" name="1">
-                    <el-checkbox-group v-model="baseLayer" @change="handleChangeBaseLayer">
+                    <el-checkbox-group v-model="checkboxLayer" @change="handleChangeLayer">
                       <el-checkbox label="底图" checked></el-checkbox>
                       <el-checkbox label="行政区" checked></el-checkbox>
                       <el-checkbox label="路网" checked></el-checkbox>
@@ -32,14 +32,14 @@
                     </el-checkbox-group>
                   </el-collapse-item>
                   <el-collapse-item class="item" title="巡护" name="2">
-                    <el-radio-group v-model="radioLayer" @change="handleChangeLayertype">
-                      <el-radio label="巡护员"></el-radio>
-                      <el-radio label="巡护路线"></el-radio>
-                      <el-radio label="巡护区域"></el-radio>
-                    </el-radio-group>
+                    <el-checkbox-group v-model="checkboxLayer" @change="handleChangeLayer">
+                      <el-checkbox label="巡护员"></el-checkbox>
+                      <el-checkbox label="巡护路线"></el-checkbox>
+                      <el-checkbox label="巡护区域"></el-checkbox>
+                    </el-checkbox-group>
                   </el-collapse-item>
                   <el-collapse-item class="item" title="监控设备" name="3">
-                    <el-radio-group v-model="radioLayer" @change="handleChangeLayertype">
+                    <el-radio-group v-model="radioLayer" @change="handleChangeLayer">
                       <el-radio label="云台"></el-radio>
                       <el-radio label="卡口"></el-radio>
                       <el-radio label="摄像头"></el-radio>
@@ -50,19 +50,19 @@
                     </el-radio-group>
                   </el-collapse-item>
                   <el-collapse-item class="item" title="动植物保护" name="4">
-                    <el-radio-group v-model="radioLayer" @change="handleChangeLayertype">
+                    <el-radio-group v-model="radioLayer" @change="handleChangeLayer">
                       <el-radio label="野生动物"></el-radio>
                       <el-radio label="野生植物"></el-radio>
                     </el-radio-group>
                   </el-collapse-item>
                   <el-collapse-item class="item" title="告警" name="5">
-                    <el-radio-group v-model="radioLayer" @change="handleChangeLayertype">
+                    <el-radio-group v-model="radioLayer" @change="handleChangeLayer">
                       <el-radio label="火灾告警"></el-radio>
                       <el-radio label="非法活动"></el-radio>
                     </el-radio-group>
                   </el-collapse-item>
                   <el-collapse-item class="item" title="古树名木" name="6">
-                    <el-radio-group v-model="radioLayer" @change="handleChangeLayertype">
+                    <el-radio-group v-model="radioLayer" @change="handleChangeLayer">
                       <el-radio label="乔木"></el-radio>
                       <el-radio label="灌木"></el-radio>
                       <el-radio label="草本"></el-radio>
@@ -159,58 +159,21 @@ export default {
       ],
       dateValue: "",
       layerName: ["1"],
-      baseLayer: [], // 基础图层
+      checkboxLayer: [], // 多选图层
       radioLayer: "", // 图层类别
     };
   },
   methods: {
-    /**
-     * 用于处理修改基本图层
-     */
-    handleChangeBaseLayer(layers) {
-      // console.log("选择了:", layers);
-      if (layers.includes("行政区划")) {
-        // console.log("行政区划勾选");
-      } else {
-        // console.log("行政区划取消");
-      }
-
-      if (layers.includes("底图")) {
-        // console.log("行底图勾选");
-        // TODO: 显示底图 - this.$refs.map.toggleBaseLayer(true);
-      } else {
-        // console.log("底图取消");
-        // TODO: 隐藏底图 - this.$refs.map.toggleBaseLayer(false);
-        /**
-         * map 组件里可以写个方法专门控制底图显隐
-         *
-         * boolean为true或false，layer为底图
-         * toggleBaseLayer(boolean) {
-         *   layer.setVisible(boolean)
-         * }
-         */
-      }
-
-      this.handleChangeLayer();
-    },
-    /**
-     * 用于处理图层类别修改
-     * @param {*} val
-     */
-    handleChangeLayertype(val) {
-      // console.log("选择了:" + val);
-
-      this.handleChangeLayer();
+    handleClickLayerList() {
+      this.$refs["border-box"] && this.$refs["border-box"].initWH()
     },
     /**
      * 监听所有图层的修改
      */
     handleChangeLayer() {
-      const layerList = {
-        baseLayer: this.baseLayer,
-        radio: this.radioLayer,
-      };
-      this.$EventBus.$emit("handleChangeLayer", layerList);
+      const checkList = [...this.checkboxLayer]
+      this.radioLayer && checkList.push(this.radioLayer)
+      this.$EventBus.$emit("handleChangeLayer", checkList);
     },
   },
 };
@@ -220,18 +183,6 @@ export default {
 .home {
   position: relative;
 
-  // .left, .right {
-  //   /deep/ .dv-border-box-10 .border-box-content {
-  //     background-color: #0c1225;
-  //     background-color: #042650;
-  //     opacity: 0.7;
-  //     margin: 7px;
-  //     width: 100%;
-  //     height: calc(100vh - 67px - 14px);
-  //     border-radius: 10px;
-  //     box-sizing: border-box;
-  //   }
-  // }
   .mainMap {
     width: 100%;
     height: calc(100vh - 67px);
@@ -268,7 +219,7 @@ export default {
     left: calc(100vw - 20% - 220px);
     // background-color: red;
     width: 200px;
-    height: 500px;
+    min-height: 480px;
     .dv-border-box-12 {
       padding: 10px;
       .title {
