@@ -21,8 +21,8 @@
                 <img src="@/assets/layers.png" alt="" />
                 <span>图层列表</span>
               </div>
-              <div class="layerContent">
-                <el-collapse v-model="layerName" @click.native="handleClickLayerList">
+              <div class="layerContent" @click="handleClickLayerList">
+                <el-collapse v-model="layerName">
                   <el-collapse-item class="item" title="基础图层" name="1">
                     <el-checkbox-group v-model="checkboxLayer" @change="handleChangeLayer">
                       <el-checkbox label="底图" checked></el-checkbox>
@@ -165,7 +165,20 @@ export default {
   },
   methods: {
     handleClickLayerList() {
-      this.$refs["border-box"] && this.$refs["border-box"].initWH()
+      const delay = 300
+      let time = 0
+
+      const flag = setInterval(() => {
+        this.$refs["border-box"] && this.$refs["border-box"].initWH()
+        time += 15;
+        if(time == delay) clearInterval(flag)
+      }, 15)
+      // do {
+      //   time += 50;
+      //   setTimeout(() => {
+      //     this.$refs["border-box"] && this.$refs["border-box"].initWH()
+      //   }, 50)
+      // } while(time == delay)
     },
     /**
      * 监听所有图层的修改
