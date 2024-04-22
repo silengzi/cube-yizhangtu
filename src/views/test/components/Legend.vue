@@ -2,7 +2,11 @@
   <div class="home">
     <div class="legend">
       <!-- 勾选的数组长度为0时不显示图例，并且当且仅有一个-底图 时，也不显示图例 -->
-      <dv-border-box-12 ref="border-box" backgroundColor="rgb(4, 47, 84, 0.7)" v-show="checkList.length && !(checkList.length == 1 && checkList[0] == '底图')">
+      <dv-border-box-12
+        ref="border-box"
+        backgroundColor="rgb(4, 47, 84, 0.7)"
+        v-show="checkList.length && !(checkList.length == 1 && checkList[0] == '底图')"
+      >
         <div class="title">图例</div>
 
         <div
@@ -11,17 +15,32 @@
           :key="item.name"
           v-show="checkList.includes(item.name)"
         >
-          <div v-if="item.type == 'polygon'" class="legend-polygon">
+          <div
+            v-if="item.type == 'polygon'"
+            class="legend-polygon"
+          >
             <i :style="{'border': `1px solid ${item.color}`}"></i><span>{{ item.name }}</span>
           </div>
-          <div v-else-if="item.type == 'line'" class="legend-line">
+          <div
+            v-else-if="item.type == 'line'"
+            class="legend-line"
+          >
             <i :style="{'background-color': item.color}"></i><span>{{ item.name }}</span>
           </div>
-          <div v-else-if="item.type == 'polygon-fill'" class="legend-polygon-fill">
+          <div
+            v-else-if="item.type == 'polygon-fill'"
+            class="legend-polygon-fill"
+          >
             <i :style="{'background-color': item.color}"></i><span>{{ item.name }}</span>
           </div>
-          <div v-else-if="item.type == 'radio'" class="legend-icon">
-            <i class="icon"><img :src="require('@/assets/legend/' + item.url + '.png')" alt="" /></i><span>{{ item.name }}</span>
+          <div
+            v-else-if="item.type == 'radio'"
+            class="legend-icon"
+          >
+            <i class="icon"><img
+                :src="require('@/assets/legend/' + item.url + '.png')"
+                alt=""
+              /></i><span>{{ item.name }}</span>
           </div>
         </div>
       </dv-border-box-12>
@@ -90,7 +109,6 @@ export default {
   bottom: 10px;
   left: 20%;
   .dv-border-box-12 {
-
     color: #fff;
     padding: 20px;
 
@@ -104,7 +122,7 @@ export default {
     .legend-item {
       margin-top: 5px;
       padding-left: 10px;
-      &>div {
+      & > div {
         display: flex;
         align-items: center;
       }

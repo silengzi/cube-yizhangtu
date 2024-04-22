@@ -19,7 +19,7 @@
               title="基础图层"
               name="1"
             >
-              <el-checkbox-group v-model="basicLayer">
+              <el-checkbox-group v-model="basicLayer" @change="handleChangeBasicLayer">
                 <el-checkbox
                   label="底图"
                   checked
@@ -119,7 +119,7 @@ export default {
   methods: {
     // 监听所有图层的修改
     handleChangeLayer() {
-      const layerList = {
+      const checkList = {
         basicLayer: this.basicLayer,
         patrol: this.patrol,
         monitor: this.monitor,
@@ -127,12 +127,15 @@ export default {
         alarm: this.alarm,
         plant: this.plant,
       }
-      this.$EventBus.$emit("handleChangeLayer", layerList)
+      this.$EventBus.$emit("handleChangeLayer", checkList)
     },
     /**
      * 用于处理图层类别修改
      * @param {*} val
      */
+    handleChangeBasicLayer(val) {
+      this.handleChangeLayer()
+    },
     handleChangePatrolLayer(val) {
       this.handleChangeLayer()
     },
