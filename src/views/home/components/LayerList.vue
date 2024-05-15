@@ -1,6 +1,7 @@
 <template>
   <div class="layerList">
     <dv-border-box-12
+      ref="border-box"
       class="mask"
       backgroundColor="rgb(4, 47, 84, 0.7)"
     >
@@ -12,29 +13,25 @@
           >
           <span>图层列表</span>
         </div>
-        <div class="layerContent">
+        <div class="layerContent" @click="handleClickLayerList">
           <el-collapse v-model="layerName">
             <el-collapse-item
               class="item"
               title="基础图层"
               name="1"
             >
-              <el-checkbox-group v-model="basicLayer" @change="handleChangeBasicLayer">
+              <el-checkbox-group v-model="checkboxLayer" @change="handleChangeLayer">
                 <el-checkbox
                   label="底图"
-                  checked
                 ></el-checkbox>
                 <el-checkbox
                   label="行政区"
-                  checked
                 ></el-checkbox>
                 <el-checkbox
                   label="路网"
-                  checked
                 ></el-checkbox>
                 <el-checkbox
                   label="林区"
-                  checked
                 ></el-checkbox>
               </el-checkbox-group>
             </el-collapse-item>
@@ -43,18 +40,18 @@
               title="巡护"
               name="2"
             >
-              <el-radio-group v-model="patrol" @change="handleChangePatrolLayer">
-                <el-radio label="巡护员"></el-radio>
-                <el-radio label="巡护路线"></el-radio>
-                <el-radio label="巡护区域"></el-radio>
-              </el-radio-group>
+              <el-checkbox-group v-model="checkboxLayer" @change="handleChangeLayer">
+                <el-checkbox label="巡护员"></el-checkbox>
+                <el-checkbox label="巡护路线"></el-checkbox>
+                <el-checkbox label="巡护区域"></el-checkbox>
+              </el-checkbox-group>
             </el-collapse-item>
             <el-collapse-item
               class="item"
               title="监控设备"
               name="3"
             >
-              <el-radio-group v-model="monitor" @change="handleChangeMonitorLayer">
+              <el-radio-group v-model="radioLayer" @change="handleChangeLayer">
                 <el-radio label="云台"></el-radio>
                 <el-radio label="卡口"></el-radio>
                 <el-radio label="摄像头"></el-radio>
@@ -69,7 +66,7 @@
               title="动植物保护"
               name="4"
             >
-              <el-radio-group v-model="protect" @change="handleChangeProtectLayer">
+              <el-radio-group v-model="radioLayer" @change="handleChangeLayer">
                 <el-radio label="野生动物"></el-radio>
                 <el-radio label="野生植物"></el-radio>
               </el-radio-group>
@@ -79,7 +76,7 @@
               title="告警"
               name="5"
             >
-              <el-radio-group v-model="alarm" @change="handleChangeAlarmLayer">
+              <el-radio-group v-model="radioLayer" @change="handleChangeLayer">
                 <el-radio label="火灾告警"></el-radio>
                 <el-radio label="非法活动"></el-radio>
               </el-radio-group>
@@ -89,7 +86,7 @@
               title="古树名木"
               name="6"
             >
-              <el-radio-group v-model="plant" @change="handleChangePlantLayer">
+              <el-radio-group v-model="radioLayer" @change="handleChangeLayer">
                 <el-radio label="乔木"></el-radio>
                 <el-radio label="灌木"></el-radio>
                 <el-radio label="草本"></el-radio>
@@ -108,54 +105,33 @@ export default {
   data() {
     return {
       layerName: ['1'],
-      basicLayer: [], // 基础图层
-      patrol: '', // 巡护
-      monitor: '', // 监控
-      protect: '', // 动植物保护
-      alarm: '', // 告警
-      plant: '', // 古树名木
+      checkboxLayer: [], // 多选图层
+      radioLayer: "",
     };
   },
   methods: {
     // 监听所有图层的修改
     handleChangeLayer() {
-      const checkList = {
-        basicLayer: this.basicLayer,
-        patrol: this.patrol,
-        monitor: this.monitor,
-        protect: this.protect,
-        alarm: this.alarm,
-        plant: this.plant,
-      }
+      const checkList = [...this.checkboxLayer]
+      this.radioLayer && checkList.push(this.radioLayer)
       this.$EventBus.$emit("handleChangeLayer", checkList)
     },
-    /**
-     * 用于处理图层类别修改
-     * @param {*} val
-     */
-    handleChangeBasicLayer(val) {
-      this.handleChangeLayer()
-    },
-    handleChangePatrolLayer(val) {
-      this.handleChangeLayer()
-    },
-    handleChangeMonitorLayer(val) {
-      this.handleChangeLayer()
-    },
-    handleChangeProtectLayer(val) {
-      this.handleChangeLayer()
-    },
-    handleChangeAlarmLayer(val) {
-      this.handleChangeLayer()
-    },
-    handleChangePlantLayer(val) {
-      this.handleChangeLayer()
-    },
-    // 处理修改基础图层
-    handleChangeBasicLayer(layers) {
-      // console.log('选择了:', layers)
-      this.handleChangeLayer()
+
+    // 图层列表框重新渲染宽高
+    handleClickLayerList() {
+      const delay = 300
+      let time = 0
+
+      const flag = setInterval(() => {
+        this.$refs["border-box"] && this.$refs["border-box"].initWH()
+        time += 15
+        if(time == delay) clearInterval(flag)
+      }, 15)
     }
+  },
+  mounted() {
+    this.checkboxLayer = ["底图","行政区","路网","林区"]
+    this.handleChangeLayer()
   }
 };
 </script>
@@ -167,7 +143,7 @@ export default {
   top: 67px;
   left: calc(100vw - 20% - 220px);
   width: 200px;
-  height: 500px;
+  min-height: 480px;
   .dv-border-box-12 {
     padding: 10px;
     .title {

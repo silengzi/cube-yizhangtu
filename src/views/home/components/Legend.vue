@@ -2,8 +2,9 @@
   <div class="legend">
     <!-- 仅有一个-底图 时，也不显示图例 -->
     <dv-border-box-12
+      ref="border-box"
       backgroundColor="rgb(4, 47, 84, 0.7)"
-      v-show="!(checkList.length == 1 && checkList[0] == '底图')"
+      v-show="checkList.length && !(checkList.length == 1 && checkList[0] == '底图')"
     >
       <div class="title">图例</div>
       <div
@@ -43,7 +44,7 @@
               alt=""
             >
           </i>
-          <span>{{item}}</span>
+          <span>{{item.name}}</span>
         </div>
       </div>
     </dv-border-box-12>
@@ -57,8 +58,8 @@ export default {
     return {
       checkList: [],   // 勾选的图层，需要显示对应的图例
       legendList: [
-        {name: "行政区", type: "polygon", color: "#56b7ff"},
-        {name: "路网", type: "line", color: "#56b7ff"},
+        { name: "行政区", type: "polygon", color: "#56b7ff" },
+        { name: "路网", type: "line", color: "#56b7ff" },
         { name: "林区", type: "polygon-fill", color: "#4e9b16" },
         { name: "巡护员", type: "radio", url: "巡护员" },
         { name: "巡护路线", type: "line", color: "#7bfb7b" },
@@ -84,10 +85,10 @@ export default {
   mounted() {
     // 接收
     this.$EventBus.$on("handleChangeLayer", (checkList) => {
-      // console.log(layerList, "layerList")
-      // this.checkList = JSON.parse(JSON.stringify([...layerList.basicLayer, layerList.patrol, layerList.monitor, layerList.protect, layerList.alarm, layerList.plant]))
       this.checkList = JSON.parse(JSON.stringify(checkList))
+      this.$refs["border-box"] && this.$refs["border-box"].initWH()
     })
+
   },
   beforeDestroy() {
     this.$EventBus.$off("handleChangeLayer") // 销毁
@@ -97,14 +98,15 @@ export default {
 
 <style scoped lang="less">
 .legend {
-  position: relative;
+  // position: relative;
+  width: 200px;
+  // height: 150px;
+  z-index: 2;
+  position: absolute;
+  bottom: -882px;
+  left: 20%;
   .dv-border-box-12 {
-    width: 200px;
-    height: 150px;
-    z-index: 2;
-    position: absolute;
-    top: calc(100vh - 257px);
-    left: 20%;
+    // top: calc(100vh - 257px);
     color: #fff;
     padding: 20px;
 
@@ -114,12 +116,46 @@ export default {
 
     .legend-item {
       margin-top: 5px;
-      .icon {
-        vertical-align: middle;
-        img {
+      padding-left: 10px;
+
+      & > div {
+        display: flex;
+        align-items: center;
+      }
+      .legend-polygon {
+        i {
+          display: inline-block;
           width: 20px;
-          height: 20px;
+          height: 15px;
           margin-right: 10px;
+          box-sizing: border-box;
+        }
+      }
+      .legend-polygon-fill {
+        i {
+          display: inline-block;
+          width: 20px;
+          height: 15px;
+          margin-right: 10px;
+        }
+      }
+      .legend-line {
+        i {
+          display: inline-block;
+          width: 16px;
+          height: 2px;
+          margin-right: 10px;
+          margin-left: 2px;
+        }
+      }
+      .legend-icon {
+        .icon {
+          vertical-align: middle;
+          img {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+          }
         }
       }
     }
