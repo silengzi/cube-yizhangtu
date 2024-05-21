@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.WeatherMapper">
+    <resultMap id="BaseResultMap" type="com.example.demo.module.Weather">
+        <id column="id" property="id"/>
+        <result column="f1" property="f1"/>
+        <result column="f2" property="f2"/>
+        <result column="f3" property="f3"/>
+        <result column="f4" property="f4"/>
+        <result column="f5" property="f5"/>
+        <result column="f6" property="f6"/>
+        <result column="level" property="level"/>
+        <result column="primary_factor" property="primary_factor"/>
+        <result column="createTime" property="createTime"/>
+        <result column="updateTime" property="updateTime"/>
+        <result column="isDelete" property="isDelete"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, f1, f2, f3, f4, f5, f6, level, primary_factor, createTime, updateTime, isDelete
+    </sql>
+
+    <select id="getWeather" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM weather where isDelete = 0
+    </select>
+</mapper>
