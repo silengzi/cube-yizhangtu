@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.module.Result;
-import com.example.demo.service.WeatherService;
+import com.example.demo.service.MonitorService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -15,14 +15,14 @@ import javax.annotation.Resource;
  **/
 
 @RestController
-@RequestMapping("/weather")
-public class WeatherController {
+@RequestMapping("/monitor")
+public class MonitorController {
 
     @Resource
-    private WeatherService weatherService;
+    private MonitorService monitorService;
 
-    @GetMapping("/getWeather")
-    public Result getWeather(){
-        return new Result(Result.SUCCESS, "查询成功", weatherService.getWeather());
+    @GetMapping("/getMonitor")
+    public Result getMonitor(){
+        return new Result(Result.SUCCESS, "查询成功", monitorService.getMonitor());
     }
 }
