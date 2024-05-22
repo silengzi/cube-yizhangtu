@@ -10,14 +10,6 @@ import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 
-/**
- * @ClassName UserController
- * @Description: TODO
- * @Author JavaZhan @公众号:Java全栈架构师
- * @Date 2020/6/13
- * @Version V1.0
- **/
-
 @RestController
 @RequestMapping("/article")
 public class ArticleController {
