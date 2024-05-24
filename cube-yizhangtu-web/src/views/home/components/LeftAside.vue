@@ -255,6 +255,7 @@
 
 <script>
 import Weather from '@/views/home/components/weather'
+import {reqWeather} from '@/api/index'
 
 export default {
   name: '',
@@ -263,7 +264,7 @@ export default {
   },
   data() {
     return {
-      updateTime: '2024-03-19 11:03:55',
+      updateTime: '',
 
       configWildLife: {
         data: [
@@ -290,6 +291,14 @@ export default {
     toggleChart() {
       this.show = this.show === 1 ? 2 : 1;
     },
+  },
+  mounted() {
+    reqWeather().then(res => {
+      console.log(res);
+      let result = res.data
+      console.log(result.data)
+      this.updateTime = result.data[0].updateTime;
+    })
   }
 };
 </script>
