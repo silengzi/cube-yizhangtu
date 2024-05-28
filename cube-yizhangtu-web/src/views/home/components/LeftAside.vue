@@ -35,13 +35,13 @@
                 <label>更新时间：</label>{{updateTime}}
               </div>
               <div class="primary">
-                <label>首要污染物：</label>PM2.5
+                <label>首要污染物：</label>{{getPrimary_factor}}
               </div>
             </div>
             <!-- 污染指数 -->
             <div class="pollutionIndex">
               <div class="index">
-                <label>135</label>
+                <label>{{level}}</label>
                 <span>轻度污染</span>
               </div>
               <div class="lineaer">
@@ -62,7 +62,7 @@
                   >
                   <label for="">温度</label>
                 </div>
-                <span>27℃</span>
+                <span>{{weaData.f1}}℃</span>
               </div>
               <!-- 湿度 -->
               <div class="humidity category">
@@ -73,7 +73,7 @@
                   >
                   <label for="">湿度</label>
                 </div>
-                <span>50%</span>
+                <span>{{weaData.f2}}%</span>
               </div>
               <!-- 风向 -->
               <div class="windDirection category">
@@ -84,7 +84,7 @@
                   >
                   <label for="">风向</label>
                 </div>
-                <span>西北风</span>
+                <span>{{weaData.f3}}</span>
               </div>
               <!-- 风速 -->
               <div class="windSpeed category">
@@ -95,7 +95,7 @@
                   >
                   <label for="">风速</label>
                 </div>
-                <span>9m/s</span>
+                <span>{{weaData.f4}}m/s</span>
 
               </div>
               <!-- 土壤湿度 -->
@@ -107,7 +107,7 @@
                   >
                   <label for="">土壤湿度</label>
                 </div>
-                <span>70%</span>
+                <span>{{weaData.f5}}%</span>
               </div>
               <!-- 气压 -->
               <div class="pressure category">
@@ -118,7 +118,7 @@
                   >
                   <label for="">气压</label>
                 </div>
-                <span>101.325kPa</span>
+                <span>{{weaData.f6}}kPa</span>
               </div>
             </div>
           </div>
@@ -142,7 +142,7 @@
                 >
                 <div class="monitor-sum-index monitor-top-desc">
                   <label class="sum text">合计</label>
-                  <label class="sum-index index">21</label>
+                  <label class="sum-index index">{{getSum}}</label>
                 </div>
               </div>
               <div class="monitor-camera monitor-top-item">
@@ -152,57 +152,57 @@
                 >
                 <div class="monitor-camera-index monitor-top-desc">
                   <label class="camera text">摄像头</label>
-                  <label class="camera-index index">2</label>
+                  <label class="camera-index index">{{monitorData.摄像头}}</label>
                 </div>
               </div>
             </div>
             <div class="monitor-sort">
-              <!-- 国控站 -->
+              <!-- 气体检测器 -->
               <div class="country monitor-class">
                 <div class="img"></div>
                 <div class="country-desc monitor-sort-desc">
-                  <label class="country-label text">国控站</label>
-                  <label class="country-index monitor-sort-index">8</label>
+                  <label class="country-label text">气体检测器</label>
+                  <label class="country-index monitor-sort-index">{{monitorData.气体检测器}}</label>
                 </div>
               </div>
-              <!-- 省控站 -->
+              <!-- 云台 -->
               <div class="province monitor-class">
                 <div class="img"></div>
                 <div class="province-desc monitor-sort-desc">
-                  <label class="province-label text">省控站</label>
-                  <label class="province-index monitor-sort-index">8</label>
+                  <label class="province-label text">云台</label>
+                  <label class="province-index monitor-sort-index">{{monitorData.云台}}</label>
                 </div>
               </div>
-              <!-- 市控站 -->
+              <!-- 无人机 -->
               <div class="city monitor-class">
                 <div class="img"></div>
                 <div class="city-desc monitor-sort-desc">
-                  <label class="city-label text">市控站</label>
-                  <label class="city-index monitor-sort-index">0</label>
+                  <label class="city-label text">无人机</label>
+                  <label class="city-index monitor-sort-index">{{monitorData.无人机}}</label>
                 </div>
               </div>
-              <!-- 微站 -->
+              <!-- 卡口 -->
               <div class="mini monitor-class">
                 <div class="img"></div>
                 <div class="mini-desc monitor-sort-desc">
-                  <label class="mini-label text">微站</label>
-                  <label class="mini-index monitor-sort-index">1</label>
+                  <label class="mini-label text">卡口</label>
+                  <label class="mini-index monitor-sort-index">{{monitorData.卡口}}</label>
                 </div>
               </div>
-              <!-- 扬尘站 -->
+              <!-- 红外相机 -->
               <div class="dust monitor-class">
                 <div class="img"></div>
                 <div class="dust-desc monitor-sort-desc">
-                  <label class="dust-label text">扬尘站</label>
-                  <label class="dust-index monitor-sort-index">0</label>
+                  <label class="dust-label text">红外相机</label>
+                  <label class="dust-index monitor-sort-index">{{monitorData.红外相机}}</label>
                 </div>
               </div>
-              <!-- 其他 -->
+              <!-- 声光报警器 -->
               <div class="other monitor-class">
                 <div class="img"></div>
                 <div class="other-desc monitor-sort-desc">
-                  <label class="other-label text">其他</label>
-                  <label class="other-index monitor-sort-index">2</label>
+                  <label class="other-label text">声光报警器</label>
+                  <label class="other-index monitor-sort-index">{{monitorData.声光报警器}}</label>
                 </div>
               </div>
             </div>
@@ -236,11 +236,13 @@
             >切换</el-button>
           </div>
           <div class="wildlife">
+            <!-- 野生动物 -->
             <dv-conical-column-chart
               v-show="show==1"
               :config="configWildLife"
               class="wildlife-chart"
             />
+            <!-- 野生植物 -->
             <dv-conical-column-chart
               v-show="show==2"
               :config="configPlant"
@@ -255,7 +257,7 @@
 
 <script>
 import Weather from '@/views/home/components/weather'
-import {reqWeather} from '@/api/index'
+import { reqWeather, reqMonitorNums, reqWildlifeNums, reqWildplantNums } from '@/api/index'
 
 export default {
   name: '',
@@ -265,14 +267,37 @@ export default {
   data() {
     return {
       updateTime: '',
-
+      type: '',
+      obj: {
+        'f1': '温度',
+        'f2': '湿度',
+        'f3': '风向',
+        'f4': '风速',
+        'f5': '土壤湿度',
+        'f6': '气压',
+      },
+      level: '',
+      // 天气数据
+      weaData: {
+        'f1': '',
+        'f2': '',
+        'f3': '',
+        'f4': '',
+        'f5': '',
+        'f6': '',
+      },
+      // 监控设备数据
+      monitorData: {
+        '摄像头': 0,
+        '气体检测器': 0,
+        '云台': 0,
+        '无人机': 0,
+        '卡口': 0,
+        '红外相机': 0,
+        '声光报警器': 0,
+      },
       configWildLife: {
-        data: [
-          { name: '国家一级保护动物', value: 20 },
-          { name: '国家二级保护动物', value: 50 },
-          { name: '三有保护动物', value: 100 },
-          { name: '濒危物种', value: 60 },
-        ],
+        data: [],
         fontSize: 7.8,
       },
       show: 1,
@@ -284,21 +309,65 @@ export default {
         ],
         fontSize: 7.8,
       },
-      showWeatherDetail: true,
+      showWeatherDetail: false,
     };
   },
   methods: {
     toggleChart() {
       this.show = this.show === 1 ? 2 : 1;
     },
+    async getWildlifeNums() {
+      // console.log(this.configWildLife.data)
+      // let result = await reqWildlifeNums()
+      // let res = result.data
+      // let transformedData = Object.entries(res.data).map(([key, value]) => {
+      //   return {name: key, value: value}
+      // })
+      // this.configWildLife.data = transformedData
+      // console.log(this.configWildLife.data)
+      try {
+        let result = await reqWildlifeNums();
+        let res = result.data;
+        console.log(res.data); // 添加这行来确认返回的数据结构
+        let transformedData = Object.entries(res.data).map(([key, value]) => {
+          return { name: key, value: value };
+        });
+        // 确保数据更新是响应式的
+        this.$set(this.configWildLife, 'data', transformedData);
+        console.log(this.configWildLife.data);
+      } catch (error) {
+        console.error('Error fetching wildlife numbers:', error);
+      }
+    }
   },
   mounted() {
+    // 天气监测
     reqWeather().then(res => {
-      console.log(res);
       let result = res.data
-      console.log(result.data)
       this.updateTime = result.data[0].updateTime;
+      this.level = result.data[0].level;
+      this.weaData = result.data[0];
     })
+    // 监控设备
+    reqMonitorNums().then(res => {
+      let result = res.data
+      // this.monitorData.气体检测器 = result.data.气体检测器
+      this.monitorData = result.data
+    })
+  },
+  async created() {
+    await this.getWildlifeNums()
+  },
+  computed: {
+    // 首要污染物
+    getPrimary_factor() {
+      this.type = 'f1'
+      return this.obj[this.type]
+    },
+    // 监控设备合计
+    getSum() {
+      return Object.values(this.monitorData).reduce((total, value) => total + value, 0);
+    }
   }
 };
 </script>
@@ -334,7 +403,7 @@ export default {
           display: flex;
           align-items: center;
           margin-right: 10px;
-          
+
           img {
             width: 25px;
             margin-right: 5px;
@@ -345,7 +414,6 @@ export default {
           }
         }
 
-        
         .weather:hover {
           cursor: pointer;
 
@@ -370,7 +438,7 @@ export default {
 
         .pollutionIndex {
           display: flex;
-          justify-content: space-between;
+          justify-content: space-around;
           align-items: center;
           margin-right: 5px;
 
@@ -471,9 +539,8 @@ export default {
         }
 
         .monitor-sort {
-          height: 50%;
+          height: 57%;
           margin: 20px 10px 0;
-          // padding: 10px;
           display: flex;
           flex-wrap: wrap;
           justify-content: space-around;
