@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.TreesMapper">
+    <resultMap id="BaseResultMap" type="com.example.demo.module.Trees">
+        <id column="id" property="id"/>
+        <result column="the_geom" property="the_geom"/>
+        <result column="name" property="name"/>
+        <result column="type" property="type"/>
+        <result column="age" property="age"/>
+        <result column="height" property="height"/>
+        <result column="bhd" property="bhd"/>
+        <result column="position" property="position"/>
+        <result column="protectiv_measures" property="protectiv_measures"/>
+        <result column="historical_background" property="historical_background"/>
+        <result column="img" property="img"/>
+        <result column="createTime" property="createTime"/>
+        <result column="updateTime" property="updateTime"/>
+        <result column="isDelete" property="isDelete"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, ST_AsText(the_geom) AS the_geom, name, type, age, height, bhd, position, protectiv_measures, historical_background, img, createTime, updateTime, isDelete
+    </sql>
+
+    <select id="getTrees" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM heritage_trees where isDelete = 0
+    </select>
+</mapper>

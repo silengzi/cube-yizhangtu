@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.RankingMapper">
+    <resultMap id="BaseResultMap" type="com.example.demo.module.Ranking">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="code" property="code"/>
+        <result column="score" property="score"/>
+        <result column="createTime" property="createTime"/>
+        <result column="updateTime" property="updateTime"/>
+        <result column="isDelete" property="isDelete"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, name, code, score, createTime, updateTime, isDelete
+    </sql>
+
+    <select id="getRanking" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM ranking where isDelete = 0
+    </select>
+</mapper>
