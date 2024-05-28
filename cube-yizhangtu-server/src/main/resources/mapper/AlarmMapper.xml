@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.AlarmMapper">
+    <resultMap id="BaseResultMap" type="com.example.demo.module.Alarm">
+        <id column="id" property="id"/>
+        <result column="the_geom" property="the_geom"/>
+        <result column="type" property="type"/>
+        <result column="level" property="level"/>
+        <result column="status" property="status"/>
+        <result column="description" property="description"/>
+        <result column="person" property="person"/>
+        <result column="handle_date" property="handle_date"/>
+        <result column="img" property="img"/>
+        <result column="createTime" property="createTime"/>
+        <result column="updateTime" property="updateTime"/>
+        <result column="isDelete" property="isDelete"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, ST_AsText(the_geom) AS the_geom, type, level, status, description, person, handle_date, img, createTime, updateTime, isDelete
+    </sql>
+
+    <select id="getAlarm" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM alarm_statistics where isDelete = 0
+    </select>
+</mapper>

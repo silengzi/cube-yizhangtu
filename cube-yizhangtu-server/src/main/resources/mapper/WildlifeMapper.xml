@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.WildlifeMapper">
+    <resultMap id="BaseResultMap" type="com.example.demo.module.Wildlife">
+        <id column="id" property="id"/>
+        <result column="the_geom" property="the_geom"/>
+        <result column="name" property="name"/>
+        <result column="type1" property="type1"/>
+        <result column="type2" property="type2"/>
+        <result column="distribution" property="distribution"/>
+        <result column="ecological_habit" property="ecological_habit"/>
+        <result column="reproductive_growth" property="reproductive_growth"/>
+        <result column="img" property="img"/>
+        <result column="createTime" property="createTime"/>
+        <result column="updateTime" property="updateTime"/>
+        <result column="isDelete" property="isDelete"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, ST_AsText(the_geom) AS the_geom, name, type1, type2, distribution, ecological_habit, reproductive_growth, img, createTime, updateTime, isDelete
+    </sql>
+
+    <select id="getWildlife" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM wildlife_conservation where isDelete = 0
+    </select>
+</mapper>
