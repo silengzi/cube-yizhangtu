@@ -137,7 +137,12 @@ export default {
 .home {
   position: relative;
   
- 
+  .main {
+    height: calc(100vh - 67px);
+    .center {
+      height: 100%;
+    }
+  }
   .mainMap {
     width: 100%;
     height: calc(100vh - 67px);

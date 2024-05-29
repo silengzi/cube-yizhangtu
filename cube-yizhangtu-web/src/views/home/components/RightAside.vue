@@ -126,6 +126,11 @@ export default {
         },
         legend: {
           type: 'scroll',
+          pageIconColor: '#666666', // 设置滚动按钮激活状态的颜色
+          pageIconInactiveColor: '#cccccc', // 设置滚动按钮未激活状态的颜色
+           pageTextStyle: {
+            color: '#ffffff', // 设置页码的颜色
+        },
           data: ['火灾告警', '非法活动', '野生动物异常', '自然灾害', '环境污染'],
           top: 'bottom',
           left: '20',

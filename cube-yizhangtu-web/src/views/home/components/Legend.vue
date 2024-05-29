@@ -103,7 +103,7 @@ export default {
   // height: 150px;
   z-index: 2;
   position: absolute;
-  bottom: -882px;
+  bottom: 0;
   left: 20%;
   .dv-border-box-12 {
     // top: calc(100vh - 257px);

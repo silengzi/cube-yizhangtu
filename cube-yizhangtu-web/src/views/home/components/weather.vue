@@ -35,7 +35,7 @@
         <div
           class="line-chart"
           ref="lineChart"
-          style="width: 300px; height: 180px;"
+          style="width: 300px; height: 100%;"
         ></div>
       </div>
     </div>
@@ -90,14 +90,12 @@ export default {
     renderLineChart() {
       const lineChart = echarts.init(this.$refs.lineChart);
       const option = {
-        grid: [
-          {
-            top: '15%',
-          },
-          {
-            bottom: '10%',
-          },
-        ],
+        grid: {
+          top: '20%',
+          bottom: '0%',
+          left: '0%',
+          right: '0%',
+        },
         xAxis: {
           type: 'category',
           data: ['Mon', 'Tue', 'Wed', 'Thu'],
@@ -181,15 +179,9 @@ export default {
           font-size: 12px;
         }
 
-        /* /deep/ .line {
-            position: absolute;
-            top: -32px;
-          /deep/ .line-chart {
-            /deep/ canvas {
-
-            }
-          }
-        } */
+        line {
+          height: calc(100% - 103px);
+        }
       }
     }
   }

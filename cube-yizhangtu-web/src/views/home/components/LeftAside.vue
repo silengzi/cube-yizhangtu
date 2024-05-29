@@ -35,7 +35,7 @@
                 <label>更新时间：</label>{{updateTime}}
               </div>
               <div class="primary">
-                <label>首要污染物：</label>{{getPrimary_factor}}
+                <label>首要污染物：</label>{{primary_factor}}
               </div>
             </div>
             <!-- 污染指数 -->
@@ -238,12 +238,14 @@
           <div class="wildlife">
             <!-- 野生动物 -->
             <dv-conical-column-chart
+              v-if="configWildLife.data.length"
               v-show="show==1"
               :config="configWildLife"
               class="wildlife-chart"
             />
             <!-- 野生植物 -->
             <dv-conical-column-chart
+              v-if="configPlant.data.length"
               v-show="show==2"
               :config="configPlant"
               class="wild-plant-chart"
@@ -267,7 +269,7 @@ export default {
   data() {
     return {
       updateTime: '',
-      type: '',
+      primary_factor: '',
       obj: {
         'f1': '温度',
         'f2': '湿度',
@@ -299,15 +301,13 @@ export default {
       configWildLife: {
         data: [],
         fontSize: 7.8,
+        showValue: true,
       },
       show: 1,
       configPlant: {
-        data: [
-          { name: '国家重点保护植物', value: 20 },
-          { name: '省级重点保护植物', value: 50 },
-          { name: '市级重点保护植物', value: 100 },
-        ],
+        data: [],
         fontSize: 7.8,
+        showValue: true,
       },
       showWeatherDetail: false,
     };
@@ -316,28 +316,32 @@ export default {
     toggleChart() {
       this.show = this.show === 1 ? 2 : 1;
     },
+    // 首要污染物
+    async getPrimary_factor() {
+      let result = await reqWeather()
+      let res = result.data
+      this.type = res.data[0].primary_factor
+      // let obj = { 'f1': '温度', 'f2': '湿度', 'f3': '风向', 'f4': '风速', 'f5': '土壤湿度', 'f6': '气压' };
+      this.primary_factor = this.obj[this.type]
+      // console.log(this.primary_factor)
+    },
+    // 野生动物锥形柱图数据
     async getWildlifeNums() {
-      // console.log(this.configWildLife.data)
-      // let result = await reqWildlifeNums()
-      // let res = result.data
-      // let transformedData = Object.entries(res.data).map(([key, value]) => {
-      //   return {name: key, value: value}
-      // })
-      // this.configWildLife.data = transformedData
-      // console.log(this.configWildLife.data)
-      try {
-        let result = await reqWildlifeNums();
-        let res = result.data;
-        console.log(res.data); // 添加这行来确认返回的数据结构
-        let transformedData = Object.entries(res.data).map(([key, value]) => {
-          return { name: key, value: value };
-        });
-        // 确保数据更新是响应式的
-        this.$set(this.configWildLife, 'data', transformedData);
-        console.log(this.configWildLife.data);
-      } catch (error) {
-        console.error('Error fetching wildlife numbers:', error);
-      }
+      let result = await reqWildlifeNums()
+      let res = result.data
+      let transformedData = Object.entries(res.data).map(([key, value]) => {
+        return { name: key, value: value }
+      })
+      this.configWildLife.data = transformedData
+    },
+    // 野生动物锥形柱图数据
+    async getWildplantNums() {
+      let result = await reqWildplantNums()
+      let res = result.data
+      let transformedData = Object.entries(res.data).map(([key, value]) => {
+        return { name: key, value: value }
+      })
+      this.configPlant.data = transformedData
     }
   },
   mounted() {
@@ -353,17 +357,20 @@ export default {
       let result = res.data
       // this.monitorData.气体检测器 = result.data.气体检测器
       this.monitorData = result.data
-    })
+    }),
+      this.getPrimary_factor()
   },
   async created() {
-    await this.getWildlifeNums()
+    await this.getWildlifeNums(),
+      this.getWildplantNums()
   },
   computed: {
     // 首要污染物
-    getPrimary_factor() {
-      this.type = 'f1'
-      return this.obj[this.type]
-    },
+    // getPrimary_factor() {
+    //   this.type = 'f1'
+    //   return this.obj[this.type]
+    // },
+
     // 监控设备合计
     getSum() {
       return Object.values(this.monitorData).reduce((total, value) => total + value, 0);
