@@ -49,6 +49,7 @@
           <dv-decoration-10 style="width:100%;height:5px;" />
           <div class="rank">
             <dv-scroll-ranking-board
+              v-if="config.data.length"
               class="scroll-ranking-board"
               :config="config"
             />
@@ -62,52 +63,41 @@
 <script>
 // 引入echarts
 import * as echarts from 'echarts'
+import { reqAlarmNums, reqRanking, reqTreesNums } from '@/api/index'
 export default {
   name: '',
   data() {
     return {
       // 饼图数据
-      pieData: [
-        { value: 335, name: '火灾告警' },
-        { value: 310, name: '非法活动' },
-        { value: 234, name: '野生动物异常' },
-        { value: 350, name: '自然灾害' },
-        { value: 555, name: '环境污染' }
-      ],
+      pieData: [],
       // 柱状图数据
-      barXData: ['乔木', '灌木', '草本'],
+      barXData: [],
+      barData: [
+        {
+          name: '乔木',
+          value: 100,
+          itemStyle: {
+            color: 'rgb(0, 255, 255)',
+          }
+        },
+        {
+          name: '灌木',
+          value: 156,
+          itemStyle: {
+            color: 'rgb(255, 192, 203)',
+          }
+        },
+        {
+          name: '草本',
+          value: 145,
+          itemStyle: {
+            color: 'rgb(255, 255, 192)',
+          }
+        },
+      ],
       // 综合排名数据
       config: {
-        data: [
-          {
-            name: '阳泉',
-            value: 55
-          },
-          {
-            name: '太原',
-            value: 120
-          },
-          {
-            name: '晋中',
-            value: 78
-          },
-          {
-            name: '临汾',
-            value: 66
-          },
-          {
-            name: '大同',
-            value: 80
-          },
-          {
-            name: '运城',
-            value: 45
-          },
-          {
-            name: '朔州',
-            value: 29
-          }
-        ],
+        data: [],
       }
 
     };
@@ -115,10 +105,18 @@ export default {
   mounted() {
     this.renderPieChart()
     this.renderBarChart()
+    this.renderRanking()
   },
   methods: {
     // 饼图渲染
-    renderPieChart() {
+    async renderPieChart() {
+      let result = await reqAlarmNums()
+      let res = result.data
+      let transformedData = Object.entries(res.data).map(([key, value]) => {
+        return { name: key, value: value }
+      })
+      // console.log(transformedData)
+      this.pieData = transformedData
       const pieChart = echarts.init(this.$refs.pieChart)
       const option = {
         tooltip: {
@@ -128,9 +126,9 @@ export default {
           type: 'scroll',
           pageIconColor: '#666666', // 设置滚动按钮激活状态的颜色
           pageIconInactiveColor: '#cccccc', // 设置滚动按钮未激活状态的颜色
-           pageTextStyle: {
+          pageTextStyle: {
             color: '#ffffff', // 设置页码的颜色
-        },
+          },
           data: ['火灾告警', '非法活动', '野生动物异常', '自然灾害', '环境污染'],
           top: 'bottom',
           left: '20',
@@ -171,7 +169,19 @@ export default {
       pieChart.setOption(option);
     },
     // 柱状图渲染
-    renderBarChart() {
+    async renderBarChart() {
+      let result = await reqTreesNums()
+      let res = result.data
+      let transformedData = Object.entries(res.data).map(([key, value]) => {
+        return {name: key, value: value}
+      })
+      this.barData = transformedData
+      console.log(this.barData)
+      let barXData = this.barData.map(function(item) {
+        return item.name
+      })
+      this.barXData = barXData
+      console.log(this.barXData)
       const barChart = echarts.init(this.$refs.barChart)
       const option = {
         xAxis: {
@@ -209,26 +219,27 @@ export default {
         },
         series: [
           {
-            data: [
-              {
-                value: 100,
-                itemStyle: {
-                  color: 'rgb(0, 255, 255)',
-                }
-              },
-              {
-                value: 156,
-                itemStyle: {
-                  color: 'rgb(255, 192, 203)',
-                }
-              },
-              {
-                value: 145,
-                itemStyle: {
-                  color: 'rgb(255, 255, 192)',
-                }
-              },
-            ],
+            data: this.barData,
+            // data: [
+            //   {
+            //     value: 100,
+            //     itemStyle: {
+            //       color: 'rgb(0, 255, 255)',
+            //     }
+            //   },
+            //   {
+            //     value: 156,
+            //     itemStyle: {
+            //       color: 'rgb(255, 192, 203)',
+            //     }
+            //   },
+            //   {
+            //     value: 145,
+            //     itemStyle: {
+            //       color: 'rgb(255, 255, 192)',
+            //     }
+            //   },
+            // ],
             // 柱宽
             barWidth: '40%',
             type: 'bar',
@@ -239,8 +250,22 @@ export default {
         ]
       }
       barChart.setOption(option);
-    }
+    },
+    // 综合排名渲染
+    async renderRanking() {
+      let result = await reqRanking()
+      let res = result.data
+      let transformedData = res.data
 
+      let rankArray = transformedData.map(function (item) {
+        return {
+          name: item.name,
+          value: item.score
+        };
+      });
+      // console.log(rankArray)
+      this.config.data = rankArray
+    }
   }
 };
 </script>
@@ -305,8 +330,8 @@ export default {
         align-items: center;
 
         .scroll-ranking-board {
-          width:300px;
-          height:200px;
+          width: 300px;
+          height: 200px;
         }
       }
     }

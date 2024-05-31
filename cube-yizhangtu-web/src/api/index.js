@@ -19,3 +19,18 @@ export const reqWildplantNums = () => request({
     url: '/wildplant/getWildplantNums',
     method: 'get',
 })
+// 统计告警各类型数量
+export const reqAlarmNums = () => request({
+    url: '/alarm/getAlarmNums',
+    method: 'get',
+})
+// 统计古树名木各类型数量
+export const reqTreesNums = () => request({
+    url: '/trees/getTreesNums',
+    method: 'get',
+})
+// 查询综合排名
+export const reqRanking = () => request({
+    url: '/Ranking/getRanking',
+    method: 'get',
+})
