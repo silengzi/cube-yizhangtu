@@ -1,6 +1,6 @@
 package com.example.demo.module;
 
-public class Alarm {
+public class Alarm extends Layer {
     private int id;
     private String the_geom;
     private String type;

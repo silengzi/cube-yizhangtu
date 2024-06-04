@@ -1,6 +1,6 @@
 package com.example.demo.module;
 
-public class Wildlife {
+public class Wildlife extends Layer {
     private int id;
     private String the_geom;
     private String name;
