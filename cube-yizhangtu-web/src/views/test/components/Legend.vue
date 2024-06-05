@@ -1,63 +1,62 @@
 <template>
-  <div class="home">
-    <div class="legend">
-      <!-- 勾选的数组长度为0时不显示图例，并且当且仅有一个-底图 时，也不显示图例 -->
-      <dv-border-box-12
-        ref="border-box"
-        backgroundColor="rgb(4, 47, 84, 0.7)"
-        v-show="checkList.length && !(checkList.length == 1 && checkList[0] == '底图')"
+  <div class="legend">
+    <!-- 仅有一个-底图 时，也不显示图例 -->
+    <dv-border-box-12
+      ref="border-box"
+      backgroundColor="rgb(4, 47, 84, 0.7)"
+      v-show="checkList.length && !(checkList.length == 1 && checkList[0] == '底图')"
+    >
+      <div class="title">图例</div>
+      <div
+        class="legend-item"
+        v-for="item in legendList"
+        :key="item.name"
+        v-show="checkList.includes(item.name)"
       >
-        <div class="title">图例</div>
-
         <div
-          class="legend-item"
-          v-for="item in legendList"
-          :key="item.name"
-          v-show="checkList.includes(item.name)"
+          class="legend-polygon"
+          v-if="item.type == 'polygon'"
         >
-          <div
-            v-if="item.type == 'polygon'"
-            class="legend-polygon"
-          >
-            <i :style="{'border': `1px solid ${item.color}`}"></i><span>{{ item.name }}</span>
-          </div>
-          <div
-            v-else-if="item.type == 'line'"
-            class="legend-line"
-          >
-            <i :style="{'background-color': item.color}"></i><span>{{ item.name }}</span>
-          </div>
-          <div
-            v-else-if="item.type == 'polygon-fill'"
-            class="legend-polygon-fill"
-          >
-            <i :style="{'background-color': item.color}"></i><span>{{ item.name }}</span>
-          </div>
-          <div
-            v-else-if="item.type == 'radio'"
-            class="legend-icon"
-          >
-            <i class="icon"><img
-                :src="require('@/assets/legend/' + item.url + '.png')"
-                alt=""
-              /></i><span>{{ item.name }}</span>
-          </div>
+          <i :style="{'border': `1px solid ${item.color}`}"></i>
+          <span>{{item.name}}</span>
         </div>
-      </dv-border-box-12>
-    </div>
+        <div
+          class="legend-line"
+          v-else-if="item.type == 'line'"
+        >
+          <i :style="{'background-color': item.color}"></i>
+          <span>{{item.name}}</span>
+        </div>
+        <div
+          class="legend-polygon-fill"
+          v-else-if="item.type == 'polygon-fill'"
+        >
+          <i :style="{'background-color': item.color}"></i>
+          <span>{{item.name}}</span>
+        </div>
+        <div
+          class="legend-icon"
+          v-else-if="item.type == 'radio'"
+        >
+          <i class="icon">
+            <img
+              :src="require('@/assets/legend/' + item.url + '.png')"
+              alt=""
+            >
+          </i>
+          <span>{{item.name}}</span>
+        </div>
+      </div>
+    </dv-border-box-12>
   </div>
 </template>
 
 <script>
 export default {
-  name: "Legend",
-  components: {},
+  name: '',
   data() {
     return {
-      // 勾选的图层，需要显示对应的图例
-      checkList: [],
-
-      // 图例总列表
+      checkList: [],   // 勾选的图层，需要显示对应的图例
       legendList: [
         { name: "行政区", type: "polygon", color: "#56b7ff" },
         { name: "路网", type: "line", color: "#56b7ff" },
@@ -79,69 +78,49 @@ export default {
         { name: "乔木", type: "radio", url: "乔木" },
         { name: "灌木", type: "radio", url: "灌木" },
         { name: "草本", type: "radio", url: "草本" },
-      ],
+      ]
     };
   },
   methods: {},
   mounted() {
     // 接收
     this.$EventBus.$on("handleChangeLayer", (checkList) => {
-      this.checkList = JSON.parse(
-        JSON.stringify(checkList)
-      );
-
+      this.checkList = JSON.parse(JSON.stringify(checkList))
       this.$refs["border-box"] && this.$refs["border-box"].initWH()
-    });
+    })
+
   },
   beforeDestroy() {
-    this.$EventBus.$off("handleChangeLayer"); // 销毁
-  },
+    this.$EventBus.$off("handleChangeLayer") // 销毁
+  }
 };
 </script>
 
-<style lang="less" scoped>
+<style scoped lang="less">
 .legend {
-  position: relative;
+  // position: relative;
   width: 200px;
   // height: 150px;
   z-index: 2;
   position: absolute;
-  bottom: 10px;
+  bottom: 0;
   left: 20%;
   .dv-border-box-12 {
+    // top: calc(100vh - 257px);
     color: #fff;
     padding: 20px;
 
     .title {
-      // position: absolute;
-      // top: 15px;
-      // left: 18px;
       height: 30px;
     }
 
     .legend-item {
       margin-top: 5px;
       padding-left: 10px;
+
       & > div {
         display: flex;
         align-items: center;
-      }
-      .legend-line {
-        i {
-          display: inline-block;
-          width: 16px;
-          height: 2px;
-          margin-left: 2px;
-          margin-right: 10px;
-        }
-      }
-      .legend-polygon-fill {
-        i {
-          display: inline-block;
-          width: 20px;
-          height: 15px;
-          margin-right: 10px;
-        }
       }
       .legend-polygon {
         i {
@@ -152,8 +131,25 @@ export default {
           box-sizing: border-box;
         }
       }
-      .legend-icon {
+      .legend-polygon-fill {
         i {
+          display: inline-block;
+          width: 20px;
+          height: 15px;
+          margin-right: 10px;
+        }
+      }
+      .legend-line {
+        i {
+          display: inline-block;
+          width: 16px;
+          height: 2px;
+          margin-right: 10px;
+          margin-left: 2px;
+        }
+      }
+      .legend-icon {
+        .icon {
           vertical-align: middle;
           img {
             width: 20px;

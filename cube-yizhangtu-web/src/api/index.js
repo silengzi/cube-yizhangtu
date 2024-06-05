@@ -34,3 +34,10 @@ export const reqRanking = () => request({
     url: '/Ranking/getRanking',
     method: 'get',
 })
+
+// 查询图层列表
+export const reqLayerList = (data) => request({
+    url: '/layers/getLayers',
+    method: 'get',
+    params: data
+})
