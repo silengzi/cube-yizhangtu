@@ -41,12 +41,44 @@ public class LayerserviceImpl implements LayerService {
                 return getWildlife();
             case "wildplant":
                 return getWildplant();
+            case "野生动物":
+                return getWildlife();
+            case "野生植物":
+                return getWildplant();
             case "alarm":
                 return getAlarm();
             case "trees":
                 return getTrees();
             case "无人机":
                 return getMonitorByType("无人机");
+            case "云台":
+                return getMonitorByType("云台");
+            case "卡口":
+                return getMonitorByType("卡口");
+            case "摄像头":
+                return getMonitorByType("摄像头");
+            case "红外相机":
+                return getMonitorByType("红外相机");
+            case "声光报警器":
+                return getMonitorByType("声光报警器");
+            case "气体检测器":
+                return getMonitorByType("气体检测器");
+            case "火灾告警":
+                return getAlarmByType("火灾告警");
+            case "非法活动":
+                return getAlarmByType("非法活动");
+            case "环境污染":
+                return getAlarmByType("环境污染");
+            case "野生动物异常":
+                return getAlarmByType("野生动物异常");
+            case "自然灾害":
+                return getAlarmByType("自然灾害");
+            case "乔木":
+                return getTreesByType("乔木");
+            case "灌木":
+                return getTreesByType("灌木");
+            case "草本":
+                return getTreesByType("草本");
             default:
                 return new ArrayList<>();
         }
@@ -74,5 +106,13 @@ public class LayerserviceImpl implements LayerService {
 
     private List<Monitor> getMonitorByType(String type) {
         return monitorMapper.getMonitorByType(type);
+    }
+
+    private List<Alarm> getAlarmByType(String type) {
+        return alarmMapper.getAlarmByType(type);
+    }
+
+    private List<Trees> getTreesByType(String type) {
+        return treesMapper.getTreesByType(type);
     }
 }
