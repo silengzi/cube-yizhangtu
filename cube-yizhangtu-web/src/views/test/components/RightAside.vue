@@ -176,12 +176,12 @@ export default {
         return {name: key, value: value}
       })
       this.barData = transformedData
-      console.log(this.barData)
+      // console.log(this.barData)
       let barXData = this.barData.map(function(item) {
         return item.name
       })
       this.barXData = barXData
-      console.log(this.barXData)
+      // console.log(this.barXData)
       const barChart = echarts.init(this.$refs.barChart)
       const option = {
         xAxis: {
