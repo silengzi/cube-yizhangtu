@@ -2,7 +2,9 @@
   <div
     id="map"
     class="map"
-  ></div>
+  >
+    <Popup ref="popup" :popupData="popupData" />
+  </div>
 </template>
 
 <script>
@@ -15,18 +17,25 @@ import View from 'ol/View.js';
 import {Style, Icon} from 'ol/style.js';
 import { fromLonLat } from "ol/proj"
 import { WKT } from "ol/format"
+import Overlay from 'ol/Overlay.js';
 
 import { reqLayerList } from '@/api/index'
+
+import Popup from "./Popup.vue"
 
 // 定义所有需要加载图层列表接口的类型数组
 const ALL_TYPE = ["云台", "卡口", "摄像头", "红外相机", "声光报警器", "气体检测器", "无人机", "野生动物", "野生植物", "火灾告警", "非法活动", "乔木", "灌木", "草本"]
 
 export default {
   name: 'Map',
+  components: { Popup },
   data() {
     return {
       checkList: [],
       layerListSource: null, // 该变量用于专门加载图层列表的数据
+      map: null, // 地图
+      overlay: null, // 弹窗
+      popupData: null, // 弹窗数据
     }
   },
   mounted() {
@@ -71,9 +80,12 @@ export default {
         layers: [img_w, cia_w],
         view: view,
       })
+      this.map = map;
       // map.addLayer(img_w)
       // map.addLayer(cia_w)
       // map.setView(view)
+
+      this.createOverlay();
 
 
       // 创建一个向量源并添加特性
@@ -88,7 +100,7 @@ export default {
       this.layerListSource = layerListSource;
 
       // 添加点击事件监听器
-      map.on('singleclick', function (evt) {
+      map.on('singleclick', (evt) => {
         // 获取点击位置的要素
         const feature = map.forEachFeatureAtPixel(evt.pixel, function (feature) {
           return feature;
@@ -98,27 +110,32 @@ export default {
         if (feature) {
           // 获取要素的属性
           const properties = feature.getProperties();
+          this.popupData = properties;
 
-          console.log(properties)
-          // // 构建详细信息的 HTML
-          // let infoContent = '<div>';
-          // for (const key in properties) {
-          //   if (properties.hasOwnProperty(key) && key !== 'geometry') {
-          //     infoContent += `<p><strong>${key}:</strong> ${properties[key]}</p>`;
-          //   }
-          // }
-          // infoContent += '</div>';
+          const coordinate = evt.coordinate;
 
-          // // 创建并显示弹窗（假设使用的是一个已有的弹窗元素）
-          // const infoContainer = document.getElementById('infoContainer');
-          // infoContainer.innerHTML = infoContent;
-          // infoContainer.style.display = 'block';
-
-          // // 设置弹窗的位置（这里简单地放在点击位置）
-          // infoContainer.style.left = evt.pixel[0] + 'px';
-          // infoContainer.style.top = evt.pixel[1] + 'px';
+          this.overlay.setPosition(coordinate);
+        } else {
+          this.$refs.popup.show = false;
         }
       });
+    },
+    /**
+     * 给地图添加弹窗
+     */
+    createOverlay() {
+      const container = this.$refs.popup.$el
+
+      const overlay = new Overlay({
+        element: container,
+        autoPan: {
+          animation: {
+            duration: 250,
+          },
+        },
+      });
+      this.overlay = overlay
+      this.map.addOverlay(overlay)
     },
     handleChangeLayer() {
       // 先清除一下所有点（这样就不需要判断取消勾选了哪个，直接把所有的点都删掉就行了，省事）
