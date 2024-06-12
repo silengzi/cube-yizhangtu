@@ -4,6 +4,7 @@ public class Wildlife extends Layer {
     private int id;
     private String the_geom;
     private String name;
+    private String type = "野生动物";
     private String type1;
     private String type2;
     private String distribution;
@@ -36,6 +37,14 @@ public class Wildlife extends Layer {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getType1() {
