@@ -12,6 +12,7 @@ import TileLayer from 'ol/layer/Tile.js';
 import VectorLayer from 'ol/layer/Vector.js';
 import VectorSource from 'ol/source/Vector.js';
 import View from 'ol/View.js';
+import {Style, Icon} from 'ol/style.js'
 import { fromLonLat } from "ol/proj"
 import { WKT } from 'ol/format'
 import { reqLayerList } from '@/api/index'
@@ -32,6 +33,7 @@ export default {
     // 接收图层列表修改事件
     this.$EventBus.$on("handleChangeLayer", (checkList) => {
       this.checkList = JSON.parse(JSON.stringify(checkList))
+      // console.log(this.checkList)
       this.handleChangeLayer()
     })
   },
@@ -82,6 +84,21 @@ export default {
       })
       map.addLayer(layerListLayer)  // 添加图层到地图（该图层并没有添加任何数据，是用来添加后续的图层列表勾选加载的点位数据的）
       this.layerListSource = layerListSource
+
+      // 添加点击事件监听器
+      map.on('singleclick', function (evt) {
+        // 获取点击位置的要素
+        const feature = map.forEachFeatureAtPixel(evt.pixel, function (feature) {
+          return feature
+        })
+
+        // 如果点击位置有要素
+        if (feature) {
+          // 获取要素的属性
+          const properties = feature.getProperties()
+          console.log(properties)
+        }
+      })
     },
 
     handleChangeLayer() {
@@ -89,21 +106,25 @@ export default {
       this.clearPoints()
 
       // 再加载勾选的图层
-      // 判断是否勾选了需要加载接口的图层
-      if (ALL_TYPE.some(item => this.checkList.includes(item))) {
-        // 调用接口获取图层数据
-        const params = {
-          type: '无人机',
-        }
-        reqLayerList(params).then(res => {
-          if (res.data.status == 1) {
-            const data = res.data.data
-            data.forEach(item => {
-              this.createPoint(item)
-            })
+      this.checkList.forEach(layerType => {
+
+        // 判断是否勾选了需要加载接口的图层
+        if (ALL_TYPE.some(item => item == layerType)) {
+          // 调用接口获取图层数据
+          const params = {
+            type: layerType,
           }
-        })
-      }
+            console.log(params)
+          reqLayerList(params).then(res => {
+            if (res.data.status == 1) {
+              const data = res.data.data
+              data.forEach(item => {
+                this.createPoint(item)
+              })
+            }
+          })
+        }
+      })
     },
 
     /* 
@@ -113,9 +134,19 @@ export default {
       // 使用 ol.format.WKT 解析 WKT 数据
       const wktFormat = new WKT()
       const pointFeature = wktFormat.readFeature(item.the_geom, {
-        dataProjection: 'EPSG:4326',
-        featureProjection: 'EPSG:3857',
+        dataProjection: 'EPSG:4326',  // WKT 数据的坐标系
+        featureProjection: 'EPSG:3857', // 地图使用的坐标系
       })
+
+      // 遍历 item 对象的所有属性，并将它们赋值给点要素
+      for(const key in item) {
+        if(item.hasOwnProperty(key) && key != 'the_geom') {
+          pointFeature.set(key, item[key])
+        }
+      }
+
+      pointFeature.setStyle(this.getStyle(pointFeature))
+
       this.layerListSource.addFeature(pointFeature)
     },
     /* 
@@ -128,8 +159,17 @@ export default {
       获取要素打点所需的样式(图标)
     */
     getStyle(feature) {
-      console.log(feature)
-      console.log(feature.getProperties())
+      // 获取该要素的 'type' 属性值
+      const type = feature.get('type')
+
+      // 创建并返回一个新的样式
+      return new Style({
+        image: new Icon({
+          anchor: [0.5, 1],
+          scale: 0.15,
+          src: require(`@/assets/legend/${type}.png`)
+        })
+      })
     }
   }
 };
