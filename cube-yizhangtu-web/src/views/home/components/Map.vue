@@ -2,7 +2,12 @@
   <div
     id="map"
     class="map"
-  ></div>
+  >
+    <Popup
+      ref="popup"
+      :popupData="popupData"
+    ></Popup>
+  </div>
 </template>
 
 <script>
@@ -12,19 +17,27 @@ import TileLayer from 'ol/layer/Tile.js';
 import VectorLayer from 'ol/layer/Vector.js';
 import VectorSource from 'ol/source/Vector.js';
 import View from 'ol/View.js';
-import {Style, Icon} from 'ol/style.js'
+import { Style, Icon } from 'ol/style.js'
 import { fromLonLat } from "ol/proj"
 import { WKT } from 'ol/format'
+import Overlay from 'ol/Overlay.js';
+
 import { reqLayerList } from '@/api/index'
+
+import Popup from './Popup.vue'
 
 // 定义所有需要加载图层列表接口的类型数组
 const ALL_TYPE = ["云台", "卡口", "摄像头", "红外相机", "声光报警器", "气体检测器", "无人机", "野生动物", "野生植物", "火灾告警", "非法活动", "乔木", "灌木", "草本"]
 export default {
   name: 'Map',
+  components: { Popup },
   data() {
     return {
       checkList: [],
       layerListSource: null,  // 该变量用于专门加载图层列表的数据
+      map: null,  //  地图
+      overlay: null,  //  弹窗
+      popupData: null,  // 弹窗数据
     }
   },
   mounted() {
@@ -70,9 +83,12 @@ export default {
         layers: [img_w, cia_w],
         view: view,
       })
+      this.map = map
       // map.addLayer(img_w)
       // map.addLayer(cia_w)
       // map.setView(view)
+
+      this.createOverlay()
 
       // 创建一个向量源并添加特性
       const layerListSource = new VectorSource({
@@ -86,7 +102,7 @@ export default {
       this.layerListSource = layerListSource
 
       // 添加点击事件监听器
-      map.on('singleclick', function (evt) {
+      map.on('singleclick', (evt) => {
         // 获取点击位置的要素
         const feature = map.forEachFeatureAtPixel(evt.pixel, function (feature) {
           return feature
@@ -96,9 +112,34 @@ export default {
         if (feature) {
           // 获取要素的属性
           const properties = feature.getProperties()
-          console.log(properties)
+          // console.log(properties)
+          this.popupData = properties
+
+          const coordinate = evt.coordinate
+
+          this.overlay.setPosition(coordinate)
+        } else {
+          this.$refs.popup.show = false
         }
       })
+    },
+
+    /* 
+      给地图加弹窗
+    */
+    createOverlay() {
+      const container = this.$refs.popup.$el
+
+      const overlay = new Overlay({
+        element: container,
+        autoPan: {
+          animation: {
+            duration: 250,
+          }
+        }
+      })
+      this.overlay = overlay
+      this.map.addOverlay(overlay)
     },
 
     handleChangeLayer() {
@@ -114,7 +155,7 @@ export default {
           const params = {
             type: layerType,
           }
-            console.log(params)
+          console.log(params)
           reqLayerList(params).then(res => {
             if (res.data.status == 1) {
               const data = res.data.data
@@ -139,8 +180,8 @@ export default {
       })
 
       // 遍历 item 对象的所有属性，并将它们赋值给点要素
-      for(const key in item) {
-        if(item.hasOwnProperty(key) && key != 'the_geom') {
+      for (const key in item) {
+        if (item.hasOwnProperty(key) && key != 'the_geom') {
           pointFeature.set(key, item[key])
         }
       }

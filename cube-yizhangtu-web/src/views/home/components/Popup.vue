@@ -1,44 +1,48 @@
 <!-- 弹窗 -->
 <template>
-  <div id="popup" class="ol-popup" v-show="show">
-    <dv-border-box-1 >
+  <div
+    id="popup"
+    class="ol-popup"
+    v-show="show"
+  >
+    <dv-border-box-1>
       <a href="#" id="popup-closer" class="ol-popup-closer" @click="show = false"></a>
       <div class="popup-content">
-				id: {{ popup ? popup.id : "-" }} type: {{ popup ? popup.type : "-" }}
-			</div>
+        id: {{ popup ? popup.id : "-" }} type: {{ popup ? popup.type : "-" }}
+      </div>
     </dv-border-box-1>
   </div>
 </template>
-    
+
 <script>
 export default {
-	name: "Popup",
-	props: {
-		popupData: {
-			type: Object,
-			default: () => ({})
-		}
-	},
-	watch: {
-		popupData: {
-			handler(val) {
-				this.show = true;
-				this.popup = val;
-			},
-			deep: true,
-			immediate: true
-		}
-	},
-	data() {
-		return {
-			show: false,
-			popup: null
-		}
-	},
-	methods: {
+  name: 'Popup',
+  data() {
+    return {
+        show: false,
+        popup: null,
+    };
+  },
+  props: {
+    popupData: {
+        type: Object,
+        default: () => ({})
+    }
+  },
+  watch: {
+    popupData: {
+        handler(val) {
+            this.show = true
+            this.popup = val
+        },
+        deep: true,
+        immediate: true,
+    }
+  },
+  methods: {
 
-	}
-}
+  }
+};
 </script>
 
 <style lang="less" scoped>
