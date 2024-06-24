@@ -41,3 +41,9 @@ export const reqLayerList = (data) => request({
     method: 'get',
     params: data
 })
+
+// 查询全量行政区划
+export const reqRegionTree = () => request({
+    url: '/region/tree',
+    method: 'get'
+})
