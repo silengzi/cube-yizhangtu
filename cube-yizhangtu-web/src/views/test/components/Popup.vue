@@ -1,12 +1,12 @@
 <!-- 弹窗 -->
 <template>
   <div id="popup" class="ol-popup" v-show="show">
-    <dv-border-box-1 >
+    <dv-border-box-10 ref="popup-border-box" backgroundColor="rgb(4, 47, 84, 0.7)">
       <a href="#" id="popup-closer" class="ol-popup-closer" @click="show = false"></a>
       <div class="popup-content">
 				id: {{ popup ? popup.id : "-" }} type: {{ popup ? popup.type : "-" }}
 			</div>
-    </dv-border-box-1>
+    </dv-border-box-10>
   </div>
 </template>
     
@@ -22,6 +22,7 @@ export default {
 	watch: {
 		popupData: {
 			handler(val) {
+        this.$refs['popup-border-box'].initWH();
 				this.show = true;
 				this.popup = val;
 			},
@@ -44,14 +45,18 @@ export default {
 <style lang="less" scoped>
 .ol-popup {
   position: absolute;
-  background-color: white;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  // box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
   padding: 15px;
   border-radius: 10px;
-  border: 1px solid #cccccc;
   bottom: 12px;
   left: -50px;
   min-width: 280px;
+  
+  /deep/ .border-box-content {
+    color: #fff;
+    padding: 20px;
+    box-sizing: border-box;
+  }
 }
 .ol-popup:after,
 .ol-popup:before {
@@ -83,6 +88,7 @@ export default {
 }
 .ol-popup-closer:after {
   content: "✖";
+  color: "#fff"
 }
 .popup-content {
 	min-height: 100px;
