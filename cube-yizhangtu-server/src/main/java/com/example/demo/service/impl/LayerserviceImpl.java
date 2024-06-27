@@ -9,6 +9,12 @@ import com.example.demo.module.Wildplant;
 import com.example.demo.mapper.WildplantMapper;
 import com.example.demo.module.Alarm;
 import com.example.demo.mapper.AlarmMapper;
+import com.example.demo.module.XunhuPoint;
+import com.example.demo.mapper.XunhuPointMapper;
+import com.example.demo.module.XunhuLine;
+import com.example.demo.mapper.XunhuLineMapper;
+import com.example.demo.module.XunhuPolygon;
+import com.example.demo.mapper.XunhuPolygonMapper;
 import com.example.demo.module.Trees;
 import com.example.demo.mapper.TreesMapper;
 import com.example.demo.service.LayerService;
@@ -19,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class LayerserviceImpl implements LayerService {
+public class LayerServiceImpl implements LayerService {
 
     @Resource
     private MonitorMapper monitorMapper;
@@ -29,6 +35,12 @@ public class LayerserviceImpl implements LayerService {
     private WildplantMapper wildplantMapper;
     @Resource
     private AlarmMapper alarmMapper;
+    @Resource
+    private XunhuPointMapper xunhuPointMapper;
+    @Resource
+    private XunhuLineMapper xunhuLineMapper;
+    @Resource
+    private XunhuPolygonMapper xunhuPolygonMapper;
     @Resource
     private TreesMapper treesMapper;
 
@@ -45,6 +57,12 @@ public class LayerserviceImpl implements LayerService {
                 return getWildlife();
             case "野生植物":
                 return getWildplant();
+            case "巡护员":
+                return getXunhuPoint();
+            case "巡护路线":
+                return getXunhuLine();
+            case "巡护区域":
+                return getXunhuPolygon();
             case "alarm":
                 return getAlarm();
             case "trees":
@@ -98,6 +116,16 @@ public class LayerserviceImpl implements LayerService {
 
     private List<Alarm> getAlarm() {
         return alarmMapper.getAlarm();
+    }
+
+    private List<XunhuPoint> getXunhuPoint() {
+        return xunhuPointMapper.getXunhuPoint();
+    }
+    private List<XunhuLine> getXunhuLine() {
+        return xunhuLineMapper.getXunhuLine();
+    }
+    private List<XunhuPolygon> getXunhuPolygon() {
+        return xunhuPolygonMapper.getXunhuPolygon();
     }
 
     private List<Trees> getTrees() {
