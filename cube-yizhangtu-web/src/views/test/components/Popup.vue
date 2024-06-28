@@ -1,44 +1,56 @@
 <!-- 弹窗 -->
 <template>
-  <div id="popup" class="ol-popup" v-show="show">
-    <dv-border-box-10 ref="popup-border-box" backgroundColor="rgb(4, 47, 84, 0.7)">
-      <a href="#" id="popup-closer" class="ol-popup-closer" @click="show = false"></a>
+  <div
+    id="popup"
+    class="ol-popup"
+    v-show="show"
+  >
+    <dv-border-box-10
+      ref="popup-border-box"
+      backgroundColor="rgb(4, 47, 84, 0.7)"
+    >
+      <a
+        href="#"
+        id="popup-closer"
+        class="ol-popup-closer"
+        @click="show = false"
+      ></a>
       <div class="popup-content">
-				id: {{ popup ? popup.id : "-" }} type: {{ popup ? popup.type : "-" }}
-			</div>
+        id: {{ popup ? popup.id : "-" }} type: {{ popup ? popup.type : "-" }}
+      </div>
     </dv-border-box-10>
   </div>
 </template>
     
 <script>
 export default {
-	name: "Popup",
-	props: {
-		popupData: {
-			type: Object,
-			default: () => ({})
-		}
-	},
-	watch: {
-		popupData: {
-			handler(val) {
+  name: "Popup",
+  props: {
+    popupData: {
+      type: Object,
+      default: () => ({})
+    }
+  },
+  watch: {
+    popupData: {
+      handler(val) {
         this.$refs['popup-border-box'].initWH();
-				this.show = true;
-				this.popup = val;
-			},
-			deep: true,
-			immediate: true
-		}
-	},
-	data() {
-		return {
-			show: false,
-			popup: null
-		}
-	},
-	methods: {
+        this.show = true;
+        this.popup = val;
+      },
+      deep: true,
+      immediate: true
+    }
+  },
+  data() {
+    return {
+      show: false,
+      popup: null
+    }
+  },
+  methods: {
 
-	}
+  }
 }
 </script>
 
@@ -51,7 +63,7 @@ export default {
   bottom: 12px;
   left: -50px;
   min-width: 280px;
-  
+
   /deep/ .border-box-content {
     color: #fff;
     padding: 20px;
@@ -88,9 +100,9 @@ export default {
 }
 .ol-popup-closer:after {
   content: "✖";
-  color: "#fff"
+  color: "#fff";
 }
 .popup-content {
-	min-height: 100px;
+  min-height: 100px;
 }
 </style>

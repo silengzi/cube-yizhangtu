@@ -8,7 +8,10 @@
           <el-cascader
             v-model="value"
             :options="options"
-            :props="{ expandTrigger: 'hover' }"
+            :props="{
+              expandTrigger: 'hover',
+              label: 'name'
+            }"
             clearable
           ></el-cascader>
         </div>
@@ -40,6 +43,7 @@ import RightAside from '@/views/home/components/RightAside.vue'
 import LayerList from '@/views/home/components/LayerList.vue'
 import Legend from '@/views/home/components/Legend.vue'
 
+import { reqRegionTree } from '@/api/index'
 export default {
   name: 'Home',
   components: {
@@ -54,80 +58,90 @@ export default {
     return {
       value: [],
       options: [
-        {
-          value: 'shandongsheng',
-          label: '山东省',
-          children: [
-            {
-              value: 'jinanshi',
-              label: '济南市',
-              children: [
-                {
-                  value: 'lixiaqu',
-                  label: '历下区',
-                },
-                {
-                  value: 'gaoxinqu',
-                  label: '高新区',
-                },
-              ]
-            },
-            {
-              value: 'weifangshi',
-              label: '潍坊市',
-              children: [
-                {
-                  value: 'shouguangshi',
-                  label: '寿光市'
-                },
-                {
-                  value: 'weichengqu',
-                  label: '潍城区'
-                },
-              ]
-            },
-          ]
-        },
-        {
-          value: 'shanxisheng',
-          label: '山西省',
-          children: [
-            {
-              value: 'taiyuanshi',
-              label: '太原市',
-              children: [
-                {
-                  value: 'jiancaopingqu',
-                  label: '尖草坪区',
-                },
-                {
-                  value: 'xiaodianqu',
-                  label: '小店区',
-                },
-              ]
-            },
-            {
-              value: 'yangquanshi',
-              label: '阳泉市',
-              children: [
-                {
-                  value: 'yuxian',
-                  label: '盂县'
-                },
-                {
-                  value: 'chengqu',
-                  label: '城区'
-                },
-              ]
-            },
-          ]
-        },
+        // {
+        //   value: 'shandongsheng',
+        //   label: '山东省',
+        //   children: [
+        //     {
+        //       value: 'jinanshi',
+        //       label: '济南市',
+        //       children: [
+        //         {
+        //           value: 'lixiaqu',
+        //           label: '历下区',
+        //         },
+        //         {
+        //           value: 'gaoxinqu',
+        //           label: '高新区',
+        //         },
+        //       ]
+        //     },
+        //     {
+        //       value: 'weifangshi',
+        //       label: '潍坊市',
+        //       children: [
+        //         {
+        //           value: 'shouguangshi',
+        //           label: '寿光市'
+        //         },
+        //         {
+        //           value: 'weichengqu',
+        //           label: '潍城区'
+        //         },
+        //       ]
+        //     },
+        //   ]
+        // },
+        // {
+        //   value: 'shanxisheng',
+        //   label: '山西省',
+        //   children: [
+        //     {
+        //       value: 'taiyuanshi',
+        //       label: '太原市',
+        //       children: [
+        //         {
+        //           value: 'jiancaopingqu',
+        //           label: '尖草坪区',
+        //         },
+        //         {
+        //           value: 'xiaodianqu',
+        //           label: '小店区',
+        //         },
+        //       ]
+        //     },
+        //     {
+        //       value: 'yangquanshi',
+        //       label: '阳泉市',
+        //       children: [
+        //         {
+        //           value: 'yuxian',
+        //           label: '盂县'
+        //         },
+        //         {
+        //           value: 'chengqu',
+        //           label: '城区'
+        //         },
+        //       ]
+        //     },
+        //   ]
+        // },
       ],
       dateValue: '',
       layerName: ['1'],
       administration: [], // 行政区划
       monitor: '', // 监控
       facilities: '', // 防火设施
+    }
+  },
+  mounted() {
+    this.getRegionTree()
+  },
+  methods: {
+    async getRegionTree() {
+      let result = await reqRegionTree()
+      let res = result.data
+      this.options = res
     }
   }
 }
@@ -136,7 +150,7 @@ export default {
 <style lang="less" scoped>
 .home {
   position: relative;
-  
+
   .main {
     height: calc(100vh - 67px);
     .center {
@@ -167,7 +181,5 @@ export default {
     top: 72px;
     left: calc(222px + 21%);
   }
-  
-  
 }
 </style>
