@@ -14,6 +14,7 @@
               value: 'area_code'
             }"
             clearable
+            @change="handleChangeXzqh"
           ></el-cascader>
         </div>
         <div class="date">
@@ -30,7 +31,7 @@
       <RightAside></RightAside>
     </div>
     <div class="mainMap">
-      <Map></Map>
+      <Map ref="map"></Map>
     </div>
   </div>
 </template>
@@ -143,8 +144,36 @@ export default {
     async getRegionTree() {
       let result = await reqRegionTree()
       let res = result.data
-      this.options = res
-    } 
+      this.options = res;
+
+      // 获取到所有行政区划后，给个默认值
+      const _default = [];
+      const province = res[0];
+      _default.push(province.area_code)
+
+      if(province.children && province.children.length ) {
+        const city = province.children[0];
+        _default.push(city.area_code)
+
+        if(city.children && city.children.length ) {
+          const country = city.children[0];
+          _default.push(country.area_code)
+        }
+      }
+
+      this.$nextTick(() => {
+        this.value = _default;
+        this.handleChangeXzqh(this.value); // 赋值不会触发组件的事件，需要手动触发一下
+      })
+    },
+    /**
+     * 行政区划改变的事件
+     * 使对应的省级行政区划高亮显示
+     */
+    handleChangeXzqh(val) {
+      const provinceCode = val[0]; // 获取省级编码
+      this.$refs.map.createHeightLightFeature(provinceCode); // 调用Map组件的方法来生成高亮要素
+    }
   }
 }
 </script>

@@ -14,12 +14,12 @@ import TileLayer from 'ol/layer/Tile.js';
 import VectorLayer from 'ol/layer/Vector.js';
 import VectorSource from 'ol/source/Vector.js';
 import View from 'ol/View.js';
-import {Style, Icon} from 'ol/style.js';
+import {Style, Icon, Stroke, Text, Fill} from 'ol/style.js';
 import { fromLonLat } from "ol/proj"
-import { WKT } from "ol/format"
+import { WKT, GeoJSON } from "ol/format"
 import Overlay from 'ol/Overlay.js';
 
-import { reqLayerList } from '@/api/index'
+import { reqLayerList, getXzqhByCode } from '@/api/index'
 
 import Popup from "./Popup.vue"
 
@@ -33,6 +33,7 @@ export default {
     return {
       checkList: [],
       layerListSource: null, // 该变量用于专门加载图层列表的数据
+      heightLightSource: null, // 存储高亮图层数据
       map: null, // 地图
       overlay: null, // 弹窗
       popupData: null, // 弹窗数据
@@ -87,7 +88,6 @@ export default {
 
       this.createOverlay();
 
-
       // 创建一个向量源并添加特性
       const layerListSource = new VectorSource({
         features: []
@@ -98,6 +98,18 @@ export default {
       });
       map.addLayer(layerListLayer) // 添加图层到地图（该图层并没有添加任何数据，是用来添加后续的图层列表勾选加载的点位数据的）
       this.layerListSource = layerListSource;
+
+      /**
+       * 添加一个空数据的图层，用于存放高亮的省级行政区划
+       */
+      const heightLightSource = new VectorSource({
+        features: []
+      });
+      const heightLightLayer = new VectorLayer({
+        source: heightLightSource,
+      });
+      map.addLayer(heightLightLayer)
+      this.heightLightSource = heightLightSource;
 
       // 添加点击事件监听器
       map.on('singleclick', (evt) => {
@@ -204,6 +216,64 @@ export default {
           src: require(`@/assets/legend/${type}.png`)
         })
       });
+    },
+    /**
+     * 创建高亮行政区划要素(feature)到地图
+     */
+    createHeightLightFeature(provinceCode) {
+      this.clearHeightLightFeature(); // 每次加载新的高亮要素时，先把旧的删除掉，不然旧的不删掉就会有好几个高亮要素。
+
+      const params = {
+        service: 'WFS',
+        version: '1.0.0',
+        request: 'GetFeature',
+        typeName: 'Beijing:gis_sheng',
+        outputFormat: 'application/json',
+        cql_filter: `adcode = '${provinceCode.substring(0, 6)}'`, // 过滤数据，只查询山西省，把这个参数注释掉查询的就是全国的所有省
+      }
+
+      getXzqhByCode(params).then(res => {
+        const geojsonObject = res.data;
+        
+        const features = new GeoJSON().readFeatures(geojsonObject, { // 将geojson格式的数据对象转换为feature对象
+          featureProjection: 'EPSG:3857'
+        })
+
+        features.forEach(feature => {
+          feature.setStyle(this.getStyleFunction(feature))
+        }) // 给每一个feature都设置样式 features是一个数组
+
+        this.heightLightSource.addFeatures(features);
+      })
+    },
+    /**
+     * 清空高亮要素
+     */
+    clearHeightLightFeature() {
+      this.heightLightSource.clear()
+    },
+    // 定义feature的样式
+    getStyleFunction(feature) {
+      return new Style({
+        fill: new Fill({
+          color: 'rgba(70, 130, 180, 0.6)' // 蓝色填充，带透明度
+        }),
+        stroke: new Stroke({
+          color: '#4682B4', // 蓝色边界线
+          width: 2
+        }),
+        text: new Text({
+          text: feature.get('name'), // 获取属性中的名称
+          scale: 1.2,
+          fill: new Fill({
+            color: '#000000' // 黑色文字
+          }),
+          stroke: new Stroke({
+            color: '#ffffff', // 白色描边
+            width: 3
+          })
+        })
+      })
     }
   }
 };

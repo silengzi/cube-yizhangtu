@@ -47,3 +47,10 @@ export const reqRegionTree = () => request({
     url: '/region/tree',
     method: 'get'
 })
+
+// 通过wfs，根据省级编码查询行政区划
+export const getXzqhByCode = (data) => request({
+    url: 'http://101.42.46.104:9000/geoserver/ows',
+    method: 'get',
+    params: data
+})
