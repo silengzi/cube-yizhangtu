@@ -8,21 +8,17 @@
           <el-cascader
             v-model="value"
             :options="options"
-            :props="{ 
+            :props="{
               expandTrigger: 'hover',
               label: 'name',
-              value: 'area_code'
+              value: 'area_code',
             }"
             clearable
             @change="handleChangeXzqh"
           ></el-cascader>
         </div>
         <div class="date">
-          <el-date-picker
-            v-model="dateValue"
-            type="year"
-            placeholder="选择年"
-          >
+          <el-date-picker v-model="dateValue" type="year" placeholder="选择年">
           </el-date-picker>
         </div>
         <LayerList></LayerList>
@@ -38,17 +34,17 @@
 
 <script>
 // @ is an alias to /src
-import Header from '@/components/header.vue'
-import Map from '@/views/test/components/Map.vue'
-import LeftAside from '@/views/test/components/LeftAside.vue'
-import RightAside from '@/views/test/components/RightAside.vue'
-import LayerList from '@/views/test/components/LayerList.vue'
-import Legend from '@/views/test/components/Legend.vue'
+import Header from "@/components/header.vue";
+import Map from "@/views/test/components/Map.vue";
+import LeftAside from "@/views/test/components/LeftAside.vue";
+import RightAside from "@/views/test/components/RightAside.vue";
+import LayerList from "@/views/test/components/LayerList.vue";
+import Legend from "@/views/test/components/Legend.vue";
 
-import { reqRegionTree } from '@/api'
+import { reqRegionTree } from "@/api";
 
 export default {
-  name: 'Home',
+  name: "Home",
   components: {
     Header,
     Map,
@@ -130,41 +126,41 @@ export default {
         //   ]
         // },
       ],
-      dateValue: '',
-      layerName: ['1'],
+      dateValue: "",
+      layerName: ["1"],
       administration: [], // 行政区划
-      monitor: '', // 监控
-      facilities: '', // 防火设施
-    }
+      monitor: "", // 监控
+      facilities: "", // 防火设施
+    };
   },
   mounted() {
-    this.getRegionTree()
+    this.getRegionTree();
   },
   methods: {
     async getRegionTree() {
-      let result = await reqRegionTree()
-      let res = result.data
+      let result = await reqRegionTree();
+      let res = result.data;
       this.options = res;
 
       // 获取到所有行政区划后，给个默认值
       const _default = [];
       const province = res[0];
-      _default.push(province.area_code)
+      _default.push(province.area_code);
 
-      if(province.children && province.children.length ) {
+      if (province.children && province.children.length) {
         const city = province.children[0];
-        _default.push(city.area_code)
+        _default.push(city.area_code);
 
-        if(city.children && city.children.length ) {
+        if (city.children && city.children.length) {
           const country = city.children[0];
-          _default.push(country.area_code)
+          _default.push(country.area_code);
         }
       }
 
       this.$nextTick(() => {
         this.value = _default;
         this.handleChangeXzqh(this.value); // 赋值不会触发组件的事件，需要手动触发一下
-      })
+      });
     },
     /**
      * 行政区划改变的事件
@@ -173,15 +169,15 @@ export default {
     handleChangeXzqh(val) {
       const provinceCode = val[0]; // 获取省级编码
       this.$refs.map.createHeightLightFeature(provinceCode); // 调用Map组件的方法来生成高亮要素
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>
 .home {
   position: relative;
-  
+
   .main {
     height: calc(100vh - 67px);
     .center {
@@ -212,7 +208,5 @@ export default {
     top: 72px;
     left: calc(222px + 21%);
   }
-  
-  
 }
 </style>
